@@ -1,6 +1,7 @@
 package hk.ust.ustac.team8.passwordutility;
 
 import hk.ust.ustac.team8.generalutility.LangUtility;
+
 import java.util.LinkedList;
 
 

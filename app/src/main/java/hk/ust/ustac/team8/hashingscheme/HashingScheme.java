@@ -16,6 +16,8 @@ public class HashingScheme {
 
     private HashingSchemeCrypto crypto;
 
+    private HashingSchemeTransform transform;
+
     private LinkedList<HashingSchemeField> fields;
 
     public HashingScheme(String name, String description, HashingSchemeCrypto crypto) {
@@ -39,6 +41,10 @@ public class HashingScheme {
 
     public HashingSchemeCrypto getCrypto() {
         return crypto;
+    }
+
+    public HashingSchemeTransform getTransform() {
+        return transform;
     }
 
     public int getFieldCount() {
@@ -69,6 +75,12 @@ public class HashingScheme {
         LangUtility.assertNonNull(newCrypto, "Null crypto provided for setCrypto of HashingScheme");
 
         this.crypto = newCrypto;
+    }
+
+    public void setTransform(HashingSchemeTransform newTransform) {
+        LangUtility.assertNonNull(newTransform, "Null transform provided for setTransform of HashingScheme");
+
+        this.transform = newTransform;
     }
 
     public void addField(HashingSchemeField newField) {

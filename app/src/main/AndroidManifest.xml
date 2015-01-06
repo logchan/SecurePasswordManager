@@ -16,6 +16,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main" >
+        </activity>
+        <activity
+            android:name=".SchemeListActivity"
+            android:label="@string/title_activity_scheme_list" >
+        </activity>
+        <activity
+            android:name=".SchemeEditActivity"
+            android:label="@string/title_activity_scheme_edit" >
+        </activity>
+        <activity
+            android:name=".InformationInputActivity"
+            android:label="@string/title_activity_information_input" >
+        </activity>
     </application>
 
 </manifest>

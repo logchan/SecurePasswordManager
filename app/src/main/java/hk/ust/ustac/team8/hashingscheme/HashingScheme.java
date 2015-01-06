@@ -14,14 +14,18 @@ public class HashingScheme {
 
     private String description;
 
+    private HashingSchemeCrypto crypto;
+
     private LinkedList<HashingSchemeField> fields;
 
-    public HashingScheme(String name, String description) {
+    public HashingScheme(String name, String description, HashingSchemeCrypto crypto) {
         LangUtility.assertNonNull(name, "Null name provided for initialization of HashingScheme");
         LangUtility.assertNonNull(description, "Null description provided for initialization of HashingScheme");
+        LangUtility.assertNonNull(crypto, "Null crypto provided for initialization of HashingScheme");
 
         this.name = name;
         this.description = description;
+        this.crypto = crypto;
         this.fields = new LinkedList<HashingSchemeField>();
     }
 
@@ -31,6 +35,10 @@ public class HashingScheme {
 
     public String getDescription() {
         return description;
+    }
+
+    public HashingSchemeCrypto getCrypto() {
+        return crypto;
     }
 
     public int getFieldCount() {
@@ -43,6 +51,24 @@ public class HashingScheme {
 
     public ListIterator<HashingSchemeField> getFieldIterator() {
         return fields.listIterator();
+    }
+
+    public void setName(String newName) {
+        LangUtility.assertNonNull(newName, "Null name provided for setName of HashingScheme");
+
+        this.name = newName;
+    }
+
+    public void setDescription(String newDescription) {
+        LangUtility.assertNonNull(newDescription, "Null description provided for setDescription of HashingScheme");
+
+        this.description = newDescription;
+    }
+
+    public void setCrypto(HashingSchemeCrypto newCrypto) {
+        LangUtility.assertNonNull(newCrypto, "Null crypto provided for setCrypto of HashingScheme");
+
+        this.crypto = newCrypto;
     }
 
     public void addField(HashingSchemeField newField) {

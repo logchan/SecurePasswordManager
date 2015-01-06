@@ -26,6 +26,12 @@ public class HashingPasswordGenerator {
         this.stringTransformServiceProvider = stringTransformServiceProvider;
     }
 
+    public void addSalt(SaltingServiceProvider saltingServiceProvider) {
+        LangUtility.assertNonNull(hashingServiceProvider, "Null SaltingServiceProvider provided for addSalt in HashingPasswordGenerator");
+
+        this.saltingServiceProviders.add(saltingServiceProvider);
+    }
+
     public String generatePassword(String secret, int iterations) {
         String result = secret;
         AdditionalSaltingInformation info = new AdditionalSaltingInformation();

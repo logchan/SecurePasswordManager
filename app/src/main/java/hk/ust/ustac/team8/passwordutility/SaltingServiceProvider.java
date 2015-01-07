@@ -1,9 +1,12 @@
 package hk.ust.ustac.team8.passwordutility;
 
 /**
- * Created by logchan on 1/5/2015.
+ * An interface that can add salt to a given String
+ * For example, it may simply append the salt
+ *
+ * @author logchan
  */
 public interface SaltingServiceProvider {
 
-    public String addSalt(String input, AdditionalSaltingInformation information);
+    public String addSalt(String input, HashingPasswordGenerator.AdditionalSaltingInformation information);
 }

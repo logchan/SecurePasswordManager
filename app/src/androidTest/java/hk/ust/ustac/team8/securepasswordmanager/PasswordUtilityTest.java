@@ -13,23 +13,7 @@ import android.test.InstrumentationTestCase;
  */
 public class PasswordUtilityTest extends InstrumentationTestCase {
 
-    public void testMD5() {
-        MD5HashingServiceProvider md5Provider = new MD5HashingServiceProvider();
-        String hash = md5Provider.hash("somesecret");
-
-        assertEquals("3e2a64a814b7d8db3a4832ceb6e43cff", hash);
-    }
-
-    public void testBasicSalt() {
-        BasicSaltAppender salt = new BasicSaltAppender("abc");
-        AdditionalSaltingInformation info = new AdditionalSaltingInformation();
-        String s = "xyz";
-        s = salt.addSalt(s, info);
-
-        assertEquals("xyzabc", s);
-    }
-
-    public void testAll() {
+    public void testGenerator() {
         MD5HashingServiceProvider md5Provider = new MD5HashingServiceProvider();
         NoEffectStringTransformer nonTransform = new NoEffectStringTransformer();
         BasicSaltAppender salt1 = new BasicSaltAppender("abc");
@@ -38,6 +22,7 @@ public class PasswordUtilityTest extends InstrumentationTestCase {
         HashingPasswordGenerator generator = new HashingPasswordGenerator(md5Provider, nonTransform);
         generator.addSalt(salt1);
         generator.addSalt(salt2);
+        
         String pwd = generator.generatePassword("somesecret", 42);
 
         assertEquals("87ee18deceb425c475aa334650b9f9b6", pwd);

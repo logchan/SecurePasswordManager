@@ -13,6 +13,8 @@ public class HashingSchemeField {
 
     private String description;
 
+    private HashingSchemeSaltingType saltingType;
+
     public String value;
 
     public HashingSchemeField(HashingSchemeFieldType type, String name, String description) {
@@ -24,6 +26,7 @@ public class HashingSchemeField {
         this.name = name;
         this.description = description;
         this.value = "";
+        this.saltingType = HashingSchemeSaltingType.APPEND;
     }
 
     public HashingSchemeFieldType getType() {
@@ -42,9 +45,19 @@ public class HashingSchemeField {
         return value;
     }
 
+    public HashingSchemeSaltingType getSaltingType() {
+        return saltingType;
+    }
+
     public void setValue(String newValue) {
         LangUtility.assertNonNull(newValue, "Null new value provided for setValue of HshingSchemeField");
 
         this.value = newValue;
+    }
+
+    public void setSaltingType(HashingSchemeSaltingType newSaltingType) {
+        LangUtility.assertNonNull(newSaltingType, "Null new salting type provided for setSaltingType of HshingSchemeField");
+
+        this.saltingType = newSaltingType;
     }
 }

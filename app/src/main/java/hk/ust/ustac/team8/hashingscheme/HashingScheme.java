@@ -51,7 +51,11 @@ public class HashingScheme {
         return fields.size();
     }
 
-    public HashingSchemeField getField(int index) {
+    public HashingSchemeField getField(Integer index) throws IndexOutOfBoundsException {
+        if (index < 0 || index >= fields.size()) {
+            throw new IndexOutOfBoundsException("Getting invalid field " + index.toString());
+        }
+
         return fields.get(index);
     }
 
@@ -87,5 +91,13 @@ public class HashingScheme {
         LangUtility.assertNonNull(newField, "Null field provided for addField of HashingScheme");
 
         fields.add(newField);
+    }
+
+    public void removeField(Integer index) throws IndexOutOfBoundsException {
+        if (index < 0 || index >= fields.size()) {
+            throw new IndexOutOfBoundsException("Removing invalid field " + index.toString());
+        }
+
+        fields.remove(index);
     }
 }

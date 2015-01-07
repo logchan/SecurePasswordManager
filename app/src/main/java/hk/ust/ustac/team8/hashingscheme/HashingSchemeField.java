@@ -23,6 +23,7 @@ public class HashingSchemeField {
         this.type = type;
         this.name = name;
         this.description = description;
+        this.value = "";
     }
 
     public HashingSchemeFieldType getType() {
@@ -35,5 +36,15 @@ public class HashingSchemeField {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String newValue) {
+        LangUtility.assertNonNull(newValue, "Null new value provided for setValue of HshingSchemeField");
+
+        this.value = newValue;
     }
 }

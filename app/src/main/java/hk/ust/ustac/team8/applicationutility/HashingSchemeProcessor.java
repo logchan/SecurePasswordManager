@@ -1,5 +1,9 @@
 package hk.ust.ustac.team8.applicationutility;
 
+import java.util.HashMap;
+
+import hk.ust.ustac.team8.generalutility.HashMapUtility;
+import hk.ust.ustac.team8.generalutility.LangUtility;
 import hk.ust.ustac.team8.hashingscheme.HashingScheme;
 import hk.ust.ustac.team8.hashingscheme.HashingSchemeCrypto;
 import hk.ust.ustac.team8.hashingscheme.HashingSchemeField;
@@ -18,48 +22,90 @@ import hk.ust.ustac.team8.passwordutility.StringTransformServiceProvider;
 import java.util.ListIterator;
 
 /**
- * Created by logchan on 1/6/2015.
+ * A bridge between HashingScheme and PasswordUtility
+ * This class is singleton.
+ *
+ * @author logchan
  */
 public class HashingSchemeProcessor {
 
-    public static HashingServiceProvider getHashingServiceProviderFromSchemeCrypto(HashingSchemeCrypto crypto) throws ClassNotFoundException {
+    private static HashingSchemeProcessor instance = null;
 
-        switch (crypto) {
-            case MD5:
-                return new MD5HashingServiceProvider();
-            default:
-                throw new ClassNotFoundException("No hashing service provider for crypto " + crypto.toString());
+    private HashMap<HashingSchemeCrypto, HashingServiceProvider> hashingHashmap;
+
+    private HashMap<HashingSchemeSaltingType, SaltingServiceProvider> saltingHashMap;
+
+    private HashMap<HashingSchemeTransform, StringTransformServiceProvider> transformHashMap;
+
+    private HashingSchemeProcessor() {
+        hashingHashmap = new HashMap<HashingSchemeCrypto, HashingServiceProvider>();
+        saltingHashMap = new HashMap<HashingSchemeSaltingType, SaltingServiceProvider>();
+        transformHashMap = new HashMap<HashingSchemeTransform, StringTransformServiceProvider>();
+    }
+
+    public HashingSchemeProcessor getInstance() {
+        if (instance == null) {
+            instance = new HashingSchemeProcessor();
+        }
+        return instance;
+    }
+
+    public void registerHashingServiceProvider(HashingSchemeCrypto crypto, HashingServiceProvider provider) {
+        HashMapUtility.conditionalNonNullUpdate(hashingHashmap, crypto, provider);
+    }
+
+    public HashingServiceProvider getHashingServiceProvider(HashingSchemeCrypto crypto) throws ClassNotFoundException {
+        if (hashingHashmap.containsKey(crypto)) {
+            return hashingHashmap.get(crypto);
+        }
+        else {
+            throw new ClassNotFoundException("No registered hashing service provider for crypto " + crypto.toString());
         }
     }
 
-    public static StringTransformServiceProvider getStringTransformServiceProviderFromSchemeTransform(HashingSchemeTransform transform) throws ClassNotFoundException {
+    public void registerSaltingServiceProvider(HashingSchemeSaltingType saltingType, SaltingServiceProvider provider) {
+        HashMapUtility.conditionalNonNullUpdate(saltingHashMap, saltingType, provider);
+    }
 
-        switch (transform) {
-            case NO_TRANSFORM:
-                return new NoEffectStringTransformer();
-            case MIXED_UPPER_AND_LOWER_CASE:
-                return new MixedUpperAndLowerCaseTransformer();
-            default:
-                throw new ClassNotFoundException("No transform service provider for transform " + transform.toString());
+    public SaltingServiceProvider getSaltingServiceProvider(HashingSchemeSaltingType saltingType, String salt) throws ClassNotFoundException, InstantiationException {
+        if (saltingHashMap.containsKey(saltingType)) {
+
+            // warning: this step is different from get hashing/transform service provider
+            // because we need a different instance of salting service provider
+            // for each salt!
+
+            SaltingServiceProvider provider = saltingHashMap.get(saltingType);
+
+            Object newProvider = LangUtility.getObjectOfSameClass(provider, new Object[] { salt });
+            if (newProvider != null) {
+                return (SaltingServiceProvider)newProvider;
+            }
+            else {
+                throw new InstantiationException("Failed initializing an instance of " + provider.getClass().getName());
+            }
+        }
+        else {
+            throw new ClassNotFoundException("No registered salting service provider for salting " + saltingType.toString());
         }
     }
 
-    public static SaltingServiceProvider getSaltingServiceProviderFromSchemeFieldSalting(HashingSchemeSaltingType salting, String salt) throws ClassNotFoundException {
+    public void registerTransformServiceProvider(HashingSchemeTransform transform, StringTransformServiceProvider provider) {
+        HashMapUtility.conditionalNonNullUpdate(transformHashMap, transform, provider);
+    }
 
-        switch (salting) {
-            case APPEND:
-                return new BasicSaltAppender(salt);
-            case APPEND_ONCE:
-                return new OnceSaltAppender(salt);
-            default:
-                throw new ClassNotFoundException("No salting service provider for type " + salting.toString());
+    public StringTransformServiceProvider getStringTransformServiceProvider(HashingSchemeTransform transform) throws ClassNotFoundException {
+        if (transformHashMap.containsKey(transform)) {
+            return transformHashMap.get(transform);
+        }
+        else {
+            throw new ClassNotFoundException("No registered transform service provider for transform " + transform.toString());
         }
     }
 
-    public static HashingPasswordGenerator getHashingPasswordGeneratorFromScheme(HashingScheme scheme) throws ClassNotFoundException{
+    public HashingPasswordGenerator getHashingPasswordGeneratorFromScheme(HashingScheme scheme) throws ClassNotFoundException, InstantiationException{
 
-        HashingServiceProvider provider = getHashingServiceProviderFromSchemeCrypto(scheme.getCrypto());
-        StringTransformServiceProvider transform = getStringTransformServiceProviderFromSchemeTransform(scheme.getTransform());
+        HashingServiceProvider provider = getHashingServiceProvider(scheme.getCrypto());
+        StringTransformServiceProvider transform = getStringTransformServiceProvider(scheme.getTransform());
 
         HashingPasswordGenerator generator = new HashingPasswordGenerator(provider, transform);
 
@@ -67,7 +113,7 @@ public class HashingSchemeProcessor {
         ListIterator<HashingSchemeField> fieldListIterator = scheme.getFieldIterator();
         while (fieldListIterator.hasNext()) {
             HashingSchemeField field = fieldListIterator.next();
-            generator.addSalt(getSaltingServiceProviderFromSchemeFieldSalting(field.getSaltingType(), field.getValue()));
+            generator.addSalt(getSaltingServiceProvider(field.getSaltingType(), field.getValue()));
         }
 
         return generator;

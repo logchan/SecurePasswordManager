@@ -3,7 +3,13 @@ package hk.ust.ustac.team8.hashingscheme;
 import hk.ust.ustac.team8.generalutility.LangUtility;
 
 /**
- * Created by logchan on 1/6/2015.
+ * A field that is a part of a scheme
+ * Each field correspond to a salt at the hashing stage
+ *
+ * @author logchan
+ * @see hk.ust.ustac.team8.hashingscheme.HashingScheme
+ * @see hk.ust.ustac.team8.hashingscheme.HashingSchemeFieldType
+ * @see hk.ust.ustac.team8.hashingscheme.HashingSchemeSaltingType
  */
 public class HashingSchemeField {
 

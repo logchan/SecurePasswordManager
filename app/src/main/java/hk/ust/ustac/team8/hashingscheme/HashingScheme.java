@@ -6,7 +6,17 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 /**
- * Created by logchan on 1/6/2015.
+ * A class that represent a hashing scheme
+ * A hashing scheme is all the information needed to create a hashing password
+ * It includes the hashing crypto to be used, the salts to be added and the final transform to be done
+ * Each salt is represented as a field with a name and a (optional) description.
+ * The user shall fill in the fields in a scheme accordingly (info for a specified website, for example),
+ * which will be used to salt.
+ *
+ * @author logchan
+ * @see hk.ust.ustac.team8.hashingscheme.HashingSchemeCrypto
+ * @see hk.ust.ustac.team8.hashingscheme.HashingSchemeField
+ * @see hk.ust.ustac.team8.hashingscheme.HashingSchemeTransform
  */
 public class HashingScheme {
 

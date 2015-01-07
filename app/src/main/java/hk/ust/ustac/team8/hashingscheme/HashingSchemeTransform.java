@@ -1,7 +1,11 @@
 package hk.ust.ustac.team8.hashingscheme;
 
 /**
- * Created by logchan on 1/6/2015.
+ * An enum that denotes the final transform of a hashing scheme
+ * Each item shall have a corresponding StringTransformServiceProvider
+ *
+ * @author logchan
+ * @see hk.ust.ustac.team8.hashingscheme.HashingScheme
  */
 public enum HashingSchemeTransform {
     NO_TRANSFORM,

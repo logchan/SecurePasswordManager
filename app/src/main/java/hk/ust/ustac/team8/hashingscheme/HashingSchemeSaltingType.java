@@ -1,7 +1,12 @@
 package hk.ust.ustac.team8.hashingscheme;
 
 /**
- * Created by logchan on 1/7/2015.
+ * An enum that denotes the corresponding salting type of a field
+ * That is, how the value of this field is going to be salted
+ * Each item shall have a corresponding SaltingServiceProvider
+ *
+ * @author logchan
+ * @see hk.ust.ustac.team8.hashingscheme.HashingSchemeField
  */
 public enum HashingSchemeSaltingType {
     APPEND,

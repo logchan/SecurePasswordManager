@@ -110,4 +110,12 @@ public class HashingScheme {
 
         fields.remove(index);
     }
+
+    public String toStorageString() {
+
+    }
+
+    public static HashingScheme createInstanceFromStorageString() {
+
+    }
 }

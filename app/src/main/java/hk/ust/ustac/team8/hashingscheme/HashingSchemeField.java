@@ -135,10 +135,10 @@ public class HashingSchemeField {
                 field.setDescription(line.substring(12));
             }
             else if (line.startsWith("type|")) {
-                field.setDescription(line.substring(5));
+                field.setType(Enum.valueOf(HashingSchemeFieldType.class, line.substring(5)));
             }
             else if (line.startsWith("saltingType|")) {
-                field.setDescription(line.substring(12));
+                field.setSaltingType(Enum.valueOf(HashingSchemeSaltingType.class, line.substring(12)));
             }
         }
 

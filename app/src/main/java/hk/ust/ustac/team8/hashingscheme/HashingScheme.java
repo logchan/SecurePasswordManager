@@ -30,14 +30,16 @@ public class HashingScheme {
 
     private LinkedList<HashingSchemeField> fields;
 
-    public HashingScheme(String name, String description, HashingSchemeCrypto crypto) {
+    public HashingScheme(String name, String description, HashingSchemeCrypto crypto, HashingSchemeTransform transform) {
         LangUtility.assertNonNull(name, "Null name provided for initialization of HashingScheme");
         LangUtility.assertNonNull(description, "Null description provided for initialization of HashingScheme");
         LangUtility.assertNonNull(crypto, "Null crypto provided for initialization of HashingScheme");
+        LangUtility.assertNonNull(transform, "Null transform provided for initialization of HashingScheme");
 
         this.name = name;
         this.description = description;
         this.crypto = crypto;
+        this.transform = transform;
         this.fields = new LinkedList<HashingSchemeField>();
     }
 
@@ -165,7 +167,7 @@ public class HashingScheme {
      * @return a scheme parsed from the input string representation
      */
     public static HashingScheme fromStorageString(String input) {
-        HashingScheme scheme = new HashingScheme("", "", HashingSchemeCrypto.MD5);
+        HashingScheme scheme = new HashingScheme("", "", HashingSchemeCrypto.MD5, HashingSchemeTransform.NO_TRANSFORM);
         String[] lines = input.split("[\\r\\n]+");
 
         for (int i = 0; i < lines.length; ++i) {
@@ -175,10 +177,10 @@ public class HashingScheme {
                 scheme.setName(line.substring(5));
             }
             else if (line.startsWith("description|")) {
-                scheme.setName(line.substring(12));
+                scheme.setDescription(line.substring(12));
             }
             else if (line.startsWith("crypto|")) {
-                HashingSchemeCrypto nCrypto = Enum.valueOf(HashingSchemeCrypto.class, line.substring(6));
+                HashingSchemeCrypto nCrypto = Enum.valueOf(HashingSchemeCrypto.class, line.substring(7));
                 scheme.setCrypto(nCrypto);
             }
             else if (line.startsWith("transform|")) {

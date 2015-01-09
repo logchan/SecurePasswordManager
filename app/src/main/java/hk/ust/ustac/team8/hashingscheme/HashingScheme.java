@@ -116,7 +116,7 @@ public class HashingScheme {
      * Normally this process is done by "Serialization"
      * But this is a small project and I'm just too tired to do that (and time is tight)
      * So here's the ugly solution. Maybe it will be altered someday,
-     * and it will become depreciated.
+     * and this will become depreciated.
      *
      * The string has several lines. Each line is a class member, starting with its name and a '|'
      * Fields are in order.
@@ -124,26 +124,37 @@ public class HashingScheme {
      * @return a string representation of the whole scheme (not including filled values)
      */
     public String toStorageString() {
-        StringBuilder result = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
 
         // class member fields first
 
-        result.append("name|");
-        result.append(name);
+        builder.append("name|");
+        builder.append(name);
+        builder.append('\n');
 
-        result.append("description|");
-        result.append(description);
+        builder.append("description|");
+        builder.append(description);
+        builder.append('\n');
 
-        result.append("crypto|");
-        result.append(crypto.toString());
+        builder.append("crypto|");
+        builder.append(crypto.toString());
+        builder.append('\n');
 
-        result.append("transform|");
-        result.append(transform.toString());
+        builder.append("transform|");
+        builder.append(transform.toString());
+        builder.append('\n');
 
         // fields one by one
-        // TODO: APPEND FIELDS
 
-        return result.toString();
+        for (HashingSchemeField field : fields) {
+            builder.append("startfield");
+            builder.append('\n');
+            builder.append(field.toStorageString());
+            builder.append("endfield");
+            builder.append('\n');
+        }
+
+        return builder.toString();
     }
 
     /**
@@ -154,7 +165,45 @@ public class HashingScheme {
      * @return a scheme parsed from the input string representation
      */
     public static HashingScheme fromStorageString(String input) {
-        //TODO: FINISH THIS PART
-        return null;
+        HashingScheme scheme = new HashingScheme("", "", HashingSchemeCrypto.MD5);
+        String[] lines = input.split("[\\r\\n]+");
+
+        for (int i = 0; i < lines.length; ++i) {
+            String line = lines[i];
+
+            if (line.startsWith("name|")) {
+                scheme.setName(line.substring(5));
+            }
+            else if (line.startsWith("description|")) {
+                scheme.setName(line.substring(12));
+            }
+            else if (line.startsWith("crypto|")) {
+                HashingSchemeCrypto nCrypto = Enum.valueOf(HashingSchemeCrypto.class, line.substring(6));
+                scheme.setCrypto(nCrypto);
+            }
+            else if (line.startsWith("transform|")) {
+                HashingSchemeTransform nTransform = Enum.valueOf(HashingSchemeTransform.class, line.substring(10));
+                scheme.setTransform(nTransform);
+            }
+            else if (line.startsWith("startfield")) {
+                StringBuilder builder = new StringBuilder();
+
+                ++i;
+                while (i < lines.length) {
+                    if (lines[i].equals("endfield")) {
+                        break;
+                    }
+                    else {
+                        builder.append(lines[i]);
+                        builder.append('\n');
+                    }
+                    ++i;
+                }
+
+                scheme.addField(HashingSchemeField.fromStorageString(builder.toString()));
+            }
+        }
+
+        return scheme;
     }
 }

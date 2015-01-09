@@ -55,6 +55,24 @@ public class HashingSchemeField {
         return saltingType;
     }
 
+    public void setName(String newName) {
+        LangUtility.assertNonNull(newName, "Null new name provided for setName of HshingSchemeField");
+
+        this.name = newName;
+    }
+
+    public void setDescription(String newDescription) {
+        LangUtility.assertNonNull(newDescription, "Null new description provided for setDescription of HshingSchemeField");
+
+        this.description = newDescription;
+    }
+
+    public void setType(HashingSchemeFieldType newType) {
+        LangUtility.assertNonNull(newType, "Null new type provided for setType of HshingSchemeField");
+
+        this.type = newType;
+    }
+
     public void setValue(String newValue) {
         LangUtility.assertNonNull(newValue, "Null new value provided for setValue of HshingSchemeField");
 
@@ -77,7 +95,21 @@ public class HashingSchemeField {
     public String toStorageString() {
         StringBuilder builder = new StringBuilder();
 
-        // TODO: FINISH THIS PART
+        builder.append("name|");
+        builder.append(name);
+        builder.append('\n');
+
+        builder.append("description|");
+        builder.append(description);
+        builder.append('\n');
+
+        builder.append("type|");
+        builder.append(type.toString());
+        builder.append('\n');
+
+        builder.append("saltingType|");
+        builder.append(saltingType.toString());
+        builder.append('\n');
 
         return builder.toString();
     }
@@ -90,8 +122,26 @@ public class HashingSchemeField {
      * @see hk.ust.ustac.team8.hashingscheme.HashingScheme
      */
     public static HashingSchemeField fromStorageString(String input) {
-        // TODO: FINISH THIS PART
+        HashingSchemeField field = new HashingSchemeField(HashingSchemeFieldType.STRING, "", "");
+        String[] lines = input.split("[\\r\\n]+");
 
-        return null;
+        for (int i = 0; i < lines.length; ++i) {
+            String line = lines[i];
+
+            if (line.startsWith("name|")) {
+                field.setName(line.substring(5));
+            }
+            else if (line.startsWith("description|")) {
+                field.setDescription(line.substring(12));
+            }
+            else if (line.startsWith("type|")) {
+                field.setDescription(line.substring(5));
+            }
+            else if (line.startsWith("saltingType|")) {
+                field.setDescription(line.substring(12));
+            }
+        }
+
+        return field;
     }
 }

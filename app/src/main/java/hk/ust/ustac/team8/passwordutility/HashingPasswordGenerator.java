@@ -1,5 +1,6 @@
 package hk.ust.ustac.team8.passwordutility;
 
+import hk.ust.ustac.team8.exception.HashingFailedException;
 import hk.ust.ustac.team8.generalutility.LangUtility;
 
 import java.util.LinkedList;
@@ -82,7 +83,7 @@ public class HashingPasswordGenerator {
      * @param iterations the number of iterations of salting and hashing
      * @return the generated hashing password
      */
-    public String generatePassword(String secret, int iterations) throws Exception {
+    public String generatePassword(String secret, int iterations) throws HashingFailedException {
         String result = secret;
         AdditionalSaltingInformation info = new AdditionalSaltingInformation();
 
@@ -98,7 +99,7 @@ public class HashingPasswordGenerator {
             // do hashing
             result = this.hashingServiceProvider.hash(result);
             if (result == null) {
-                throw new Exception("Hashing stage failed.");
+                throw new HashingFailedException("Hashing stage failed.");
             }
         }
 

@@ -5,7 +5,14 @@ import java.util.HashMap;
 /**
  * Some static methods that are related to Java HashMap
  */
-public class HashMapUtility {
+public final class HashMapUtility {
+
+    /**
+     * Private constructor to prevent creating instance
+     */
+    private HashMapUtility() {
+
+    }
 
     /**
      * A method that performs the following tasks:

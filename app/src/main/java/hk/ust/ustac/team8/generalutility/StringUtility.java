@@ -3,9 +3,16 @@ package hk.ust.ustac.team8.generalutility;
 /**
  * Some static methods that are related to Java String
  */
-public class StringUtility {
+public final class StringUtility {
 
     private static final char[] LOWERHEXDIGITS = { '0','1','2','3','4','5','6','7','8','9', 'a','b','c','d','e','f' };
+
+    /**
+     * Private constructor to prevent creating instance
+     */
+    private StringUtility() {
+
+    }
 
     /**
      * Create a corresponding hex string (lower case) of a byte array

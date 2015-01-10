@@ -6,7 +6,14 @@ import java.lang.reflect.Constructor;
  * Some static methods that are related to Java language
  *
  */
-public class LangUtility {
+public final class LangUtility {
+
+    /**
+     * Private constructor to prevent creating instance
+     */
+    private LangUtility() {
+
+    }
 
     /**
      * Ensure that the object is not null. If it is, throw an NullPointerException with the provided message

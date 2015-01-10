@@ -9,6 +9,7 @@ import android.content.Context;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -47,9 +48,48 @@ public final class AppFileUtility {
         return sDir;
     }
 
+    /**
+     * Save a scheme. If a scheme of the same name exists, it will be overwritten (saved info are
+     * not affected). If a file of the same name exists in the schemes folder, it will be deleted
+     * (and if it can't be, the saving will fail).
+     *
+     * @param context the app context
+     * @param scheme the scheme to be saved
+     * @return true if succeed, false otherwise
+     */
+    public boolean saveScheme(Context context, HashingScheme scheme) {
+        File sDir = getSchemeDir(context);
+        File tsDir = new File(sDir, scheme.getName());
 
-    public void saveScheme(HashingScheme scheme) {
-        //TODO
+        if (tsDir.exists()) {
+            if (!tsDir.isDirectory()) {
+                if (!tsDir.delete()) {
+                    return false;
+                }
+                if (!tsDir.mkdir()) {
+                    return false;
+                }
+            }
+        }
+        else {
+            if (!tsDir.mkdir()) {
+                return false;
+            }
+        }
+
+        try {
+            File hsFile = new File(tsDir, scheme.getName() + ".hs");
+            hsFile.delete();
+            hsFile.createNewFile();
+
+            FileOutputStream outputStream = new FileOutputStream(hsFile);
+            outputStream.write(scheme.toStorageString().getBytes());
+            outputStream.close();
+            return true;
+        }
+        catch (Exception ex) {
+            return false;
+        }
     }
 
     /**

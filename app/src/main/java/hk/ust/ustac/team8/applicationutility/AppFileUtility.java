@@ -164,7 +164,7 @@ public final class AppFileUtility {
                 }
                 else {
                     // remove invalid
-                    FileUtility.DeleteRecursively(subDir);
+                    FileUtility.deleteRecursively(subDir);
                 }
             }
         }
@@ -183,12 +183,72 @@ public final class AppFileUtility {
     public boolean deleteScheme(Context context, String name) throws SchemeNotFoundException {
         File sDir = getSchemeDir(context);
 
-        for (File sub : sDir.listFiles()) {
-            if (sub.isDirectory() && sub.getName().equals(name)) {
-                return FileUtility.DeleteRecursively(sub);
-            }
+        File dir = new File(sDir, name);
+
+        if (dir.exists() && dir.isDirectory()) {
+            return FileUtility.deleteRecursively(dir);
         }
 
         throw new SchemeNotFoundException("Scheme not found for deleteScheme: " + name);
+    }
+
+    /**
+     * Rename a scheme (its filename and dirname).
+     * The scheme name (in its file) will not be changed. Save it afterwards.
+     *
+     * @param context the app context
+     * @param oldName the name of the scheme
+     * @param newName the new name of the scheme
+     * @return true if everything works, false if it is found but something go wrong while renaming
+     *         or if same (new) scheme exists
+     * @throws SchemeNotFoundException when it can not be found
+     */
+    public boolean renameSchemeFile(Context context, String oldName, String newName) throws SchemeNotFoundException {
+        File sDir = getSchemeDir(context);
+        File tsDir = new File(sDir, oldName);
+        File tsFile = null;
+
+        // find old scheme
+        if (!tsDir.exists() || !tsDir.isDirectory()) {
+            throw new SchemeNotFoundException("Scheme dir not found for renameSchemeFile:" + oldName);
+        }
+
+        for (File sub : tsDir.listFiles()) {
+            if (sub.isFile() && sub.getName().equals(oldName + ".hs")) {
+                tsFile = sub;
+            }
+        }
+        if (tsFile == null) {
+            throw new SchemeNotFoundException("Scheme file (.hs) not found for renameSchemeFile:" + oldName);
+        }
+
+        // check existance of new scheme
+        File ntsDir = new File(sDir, newName);
+        if (ntsDir.exists()) {
+            return false;
+        }
+        else {
+            // rename file then folder
+            File ntsFile = new File(tsDir, newName + ".hs");
+            if (tsFile.renameTo(ntsFile)) {
+                // rename file success
+                // now rename folder
+                if (tsDir.renameTo(ntsDir)) {
+                    // rename folder also success
+                    return true;
+                }
+                else {
+                    // rename folder failed,
+                    // try reverting process
+                    tsFile = new File(tsDir, oldName + ".hs");
+                    ntsFile.renameTo(tsFile);
+                    return false;
+                }
+            }
+            else {
+                // file rename failed
+                return false;
+            }
+        }
     }
 }

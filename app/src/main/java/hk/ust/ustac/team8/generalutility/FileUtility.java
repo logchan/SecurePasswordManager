@@ -20,12 +20,12 @@ public final class FileUtility {
      * @param fileOrDir the root to be deleted
      * @return true if everything was done successfully, false otherwise
      */
-    public static boolean DeleteRecursively(File fileOrDir) {
+    public static boolean deleteRecursively(File fileOrDir) {
         boolean subSuccess = true;
 
         if (fileOrDir.isDirectory()) {
             for (File sub : fileOrDir.listFiles()) {
-                subSuccess = DeleteRecursively(sub);
+                subSuccess = deleteRecursively(sub);
             }
         }
 

@@ -9,4 +9,5 @@
     <string name="title_activity_scheme_edit">SchemeEditActivity</string>
     <string name="title_activity_information_input">InformationInputActivity</string>
 
+    <string name="info_init">Loading...</string>
 </resources>

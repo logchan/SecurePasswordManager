@@ -50,7 +50,7 @@ public final class ApplicationManager {
      *
      * @return the instance
      */
-    public ApplicationManager getInstance() {
+    public static ApplicationManager getInstance() {
         return instance;
     }
 

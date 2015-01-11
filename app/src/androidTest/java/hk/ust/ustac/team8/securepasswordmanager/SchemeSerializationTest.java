@@ -7,6 +7,7 @@ import hk.ust.ustac.team8.hashingscheme.HashingSchemeFieldType;
 import hk.ust.ustac.team8.hashingscheme.HashingSchemeTransform;
 
 import android.test.InstrumentationTestCase;
+import android.util.Log;
 
 /**
  * Created by logchan on 1/9/2015.
@@ -19,6 +20,7 @@ public class SchemeSerializationTest extends InstrumentationTestCase {
         scheme.addField(new HashingSchemeField(HashingSchemeFieldType.EMAIL, "another field", "one different field for test"));
 
         String storage = scheme.toStorageString();
+        Log.i("STORAGE", storage);
         HashingScheme restoredS = HashingScheme.fromStorageString(storage);
 
         assertEquals("a scheme", restoredS.getName());

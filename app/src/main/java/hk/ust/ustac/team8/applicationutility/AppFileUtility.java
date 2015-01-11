@@ -33,7 +33,7 @@ public final class AppFileUtility {
      * @param context the app context
      * @return the File object of the schemes dir
      */
-    private File getSchemeDir(Context context) {
+    private static File getSchemeDir(Context context) {
         File dir = context.getFilesDir();
         File sDir = new File(dir, "schemes");
 
@@ -57,7 +57,7 @@ public final class AppFileUtility {
      * @param scheme the scheme to be saved
      * @return true if succeed, false otherwise
      */
-    public boolean saveScheme(Context context, HashingScheme scheme) {
+    public static boolean saveScheme(Context context, HashingScheme scheme) {
         File sDir = getSchemeDir(context);
         File tsDir = new File(sDir, scheme.getName());
 
@@ -100,7 +100,7 @@ public final class AppFileUtility {
      * @param dir the directory for the scheme
      * @return the scheme object. null if no .hs found, or exception occurred when reading.
      */
-    private HashingScheme getOneScheme(File dir) {
+    private static HashingScheme getOneScheme(File dir) {
         if (!dir.exists() || !dir.isDirectory()) {
             return null;
         }
@@ -150,7 +150,7 @@ public final class AppFileUtility {
      * @param context the app context
      * @return a linkedlist of all saved schemes
      */
-    public LinkedList<HashingScheme> getAllSchemes(Context context) {
+    public static LinkedList<HashingScheme> getAllSchemes(Context context) {
         LinkedList<HashingScheme> schemes = new LinkedList<HashingScheme>();
         File sDir = getSchemeDir(context);
 
@@ -180,7 +180,7 @@ public final class AppFileUtility {
      * @return true if everything works, false if it is found but something go wrong while deleting
      * @throws SchemeNotFoundException when it can not be found
      */
-    public boolean deleteScheme(Context context, String name) throws SchemeNotFoundException {
+    public static boolean deleteScheme(Context context, String name) throws SchemeNotFoundException {
         File sDir = getSchemeDir(context);
 
         File dir = new File(sDir, name);
@@ -203,7 +203,7 @@ public final class AppFileUtility {
      *         or if same (new) scheme exists
      * @throws SchemeNotFoundException when it can not be found
      */
-    public boolean renameSchemeFile(Context context, String oldName, String newName) throws SchemeNotFoundException {
+    public static boolean renameSchemeFile(Context context, String oldName, String newName) throws SchemeNotFoundException {
         File sDir = getSchemeDir(context);
         File tsDir = new File(sDir, oldName);
         File tsFile = null;

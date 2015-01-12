@@ -26,6 +26,9 @@ public class HashingResultActivity extends Activity implements SeekBar.OnSeekBar
         resultText1 = (TextView) findViewById(R.id.resultTextView1);
         resultText2 = (TextView) findViewById(R.id.resultTextView2);
         resultSizeSeek = (SeekBar) findViewById(R.id.resultSizeSeek);
+
+        // setup listener
+        resultSizeSeek.setOnSeekBarChangeListener(this);
     }
 
 

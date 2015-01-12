@@ -208,4 +208,55 @@ public class HashingScheme {
 
         return scheme;
     }
+
+    /**
+     * Get the values of all fields in order. Seperated by linebreak ('\n').
+     *
+     * @return values of all fields, one per line
+     */
+    public String exportFieldValues() {
+        StringBuilder builder = new StringBuilder();
+
+        for (HashingSchemeField field : fields) {
+            builder.append(field.getValue());
+            builder.append('\n');
+        }
+
+        return builder.toString();
+    }
+
+    /**
+     * Set the values of fields in order. Values are seperated by a linebreak ('\n').
+     *
+     * @param input values of all fields, one per line
+     */
+    public void importFieldValues(String input) {
+        // for mixed format
+        input = input.replaceAll("\\r\\n", "\n");
+        input = input.replaceAll("\\r", "\n");
+        String[] lines = input.split("\\n");
+        importFieldValues(lines);
+    }
+
+    /**
+     * Set the values of fields in order. If too many values are provided, only the first N values
+     * will be taken (where N is the number of fields); if too few (K < N) values are provided, the
+     * last N-K values will remain unchanged.
+     *
+     * @param values the values of fields
+     */
+    public void importFieldValues(String[] values) {
+        int bound = values.length;
+
+        int i = 0;
+        for (HashingSchemeField field : fields) {
+            if (i >= bound) {
+                break;
+            }
+            else {
+                field.setValue(values[i]);
+                ++i;
+            }
+        }
+    }
 }

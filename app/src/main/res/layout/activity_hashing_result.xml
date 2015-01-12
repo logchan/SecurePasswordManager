@@ -36,13 +36,14 @@
 
     <TextView
         android:id="@+id/hashingResultTextView"
-        android:text="D41D 8CD9\n8F00 B204"
+        android:paddingBottom="15dp"
         style="@style/HashingResultTheme"
         />
 
     <Button
         style="@style/ButtonTheme"
         android:text="@string/copy_hashing_result"
+        android:layout_width="match_parent"
         android:id="@+id/hashingResultCopyBtn"/>
 
     <LinearLayout

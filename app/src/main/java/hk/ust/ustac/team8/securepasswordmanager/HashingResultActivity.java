@@ -56,8 +56,19 @@ public class HashingResultActivity extends Activity implements SeekBar.OnSeekBar
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hashing_result);
 
-        // set man
+        // set manager
+        if (!ApplicationManager.alreadySetUp()) {
+            try {
+                ApplicationManager.setUp(getApplicationContext());
+            }
+            catch (Exception e) {
+                // omit
+            }
+        }
         manager = ApplicationManager.getInstance();
+
+        //TODO: remove debug code
+        manager.getSettings().lastHashingResult = "D41D8CD98F00B204";
 
         // setup reference to views
         hashingResultText = (TextView) findViewById(R.id.hashingResultTextView);
@@ -72,7 +83,7 @@ public class HashingResultActivity extends Activity implements SeekBar.OnSeekBar
         doneBtn.setOnClickListener(this);
         copyBtn.setOnClickListener(this);
 
-        setHashingResultText("D41D8CD98F00B204E9800998ECF8427E");
+        setHashingResultText(manager.getSettings().lastHashingResult);
     }
 
 

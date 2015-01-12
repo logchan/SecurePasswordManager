@@ -56,6 +56,7 @@ public class HashingResultActivity extends Activity implements SeekBar.OnSeekBar
         switch (seekBar.getId()) {
             case R.id.resultSizeSeek:
                 resultText1.setTextSize(TypedValue.COMPLEX_UNIT_SP, resultSizeSeek.getProgress());
+                resultText2.setTextSize(TypedValue.COMPLEX_UNIT_SP, resultSizeSeek.getProgress());
                 break;
 
             default:

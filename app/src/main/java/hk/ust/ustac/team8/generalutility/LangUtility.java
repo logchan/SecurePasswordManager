@@ -1,6 +1,7 @@
 package hk.ust.ustac.team8.generalutility;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 
 /**
  * Some static methods that are related to Java language
@@ -65,6 +66,85 @@ public final class LangUtility {
         }
 
         // no constructor matches
+        return null;
+    }
+
+    /**
+     * Very simple serialization. Given the object and the fields to save, generate:
+     * FIELD_NAME_1|FIELD_VALUE_1
+     * FIELD_NAME_2|FIELD_VALUE_2
+     * lines separated by '\n'
+     * FieldNotFound & IllegalAccess will be omitted (corresponding fields are ignored).
+     * Only String, int, boolean and Enum are supported.
+     *
+     * @param obj the object to be serialized
+     * @return a string of the fields
+     */
+    public static String getSimpleStringRepresentation(Object obj, String ... fields) {
+        if (obj == null || fields == null) {
+            return "";
+        }
+
+        Class cls = obj.getClass();
+        Field[] clsFields = cls.getFields();
+
+        // make fields easier to be checked
+        String clsFieldsStr = "";
+        for (Field clsField : clsFields) {
+            clsFieldsStr += clsField.getName();
+            clsFieldsStr += "|";
+        }
+
+        StringBuilder builder = new StringBuilder();
+
+        for (String field : fields) {
+            // skip harmful inputs
+            if (field.indexOf('|') >= 0) {
+                continue;
+            }
+            // check field existance
+            if (clsFieldsStr.indexOf(field) >= 0) {
+                try {
+                    Field targetField = cls.getField(field);
+                    Object value = targetField.get(obj);
+                    Class targetType = targetField.getType();
+
+                    String line = field + "|";
+
+                    if (targetType == String.class) {
+                        line += ((String)value);
+                    }
+                    else if (targetType == int.class || targetType == Integer.class) {
+                        line += ((Integer)value);
+                    }
+                    else if (targetType == boolean.class || targetType == Boolean.class) {
+                        line += (((Boolean)value) ? "TRUE" : "FALSE");
+                    }
+                    else if (targetType.isEnum()) {
+                        line += (value.toString());
+                    }
+                    else {
+                        continue;
+                    }
+
+                    builder.append(line);
+                    builder.append('\n');
+                }
+                catch (NoSuchFieldException e) {
+                    // somehow it bypassed the check, ignore
+                    continue;
+                }
+                catch (IllegalAccessException e) {
+                    // well, we can not access it, ignore
+                    continue;
+                }
+            }
+        }
+
+        return builder.toString();
+    }
+
+    public static <T> T parseObjectFromSimpleString(String input) {
         return null;
     }
 }

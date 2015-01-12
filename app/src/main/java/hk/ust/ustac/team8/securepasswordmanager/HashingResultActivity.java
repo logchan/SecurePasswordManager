@@ -83,6 +83,9 @@ public class HashingResultActivity extends Activity implements SeekBar.OnSeekBar
         doneBtn.setOnClickListener(this);
         copyBtn.setOnClickListener(this);
 
+        // set view
+        resultSizeSeek.setProgress(manager.getSettings().resultFontsize);
+        hashingResultText.setTextSize(TypedValue.COMPLEX_UNIT_SP, manager.getSettings().resultFontsize);
         setHashingResultText(manager.getSettings().lastHashingResult);
     }
 

@@ -1,13 +1,13 @@
 package hk.ust.ustac.team8.securepasswordmanager;
 
-import android.test.ActivityUnitTestCase;
+import android.test.ActivityInstrumentationTestCase2;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 /**
  * Created by logchan on 1/12/2015.
  */
-public class HashingResultActivityTest extends ActivityUnitTestCase<HashingResultActivity> {
+public class HashingResultActivityTest extends ActivityInstrumentationTestCase2<HashingResultActivity> {
 
     private HashingResultActivity activity;
 

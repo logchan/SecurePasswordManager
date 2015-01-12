@@ -11,9 +11,7 @@ import android.widget.TextView;
 
 public class HashingResultActivity extends Activity implements SeekBar.OnSeekBarChangeListener {
 
-    private TextView resultText1;
-
-    private TextView resultText2;
+    private TextView hashingResultText;
 
     private SeekBar resultSizeSeek;
 
@@ -23,9 +21,8 @@ public class HashingResultActivity extends Activity implements SeekBar.OnSeekBar
         setContentView(R.layout.activity_hashing_result);
 
         // setup reference to views
-        resultText1 = (TextView) findViewById(R.id.resultTextView1);
-        resultText2 = (TextView) findViewById(R.id.resultTextView2);
-        resultSizeSeek = (SeekBar) findViewById(R.id.resultSizeSeek);
+        hashingResultText = (TextView) findViewById(R.id.hashingResultTextView);
+        resultSizeSeek = (SeekBar) findViewById(R.id.hashingResultSizeSeek);
 
         // setup listener
         resultSizeSeek.setOnSeekBarChangeListener(this);
@@ -57,9 +54,8 @@ public class HashingResultActivity extends Activity implements SeekBar.OnSeekBar
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
         switch (seekBar.getId()) {
-            case R.id.resultSizeSeek:
-                resultText1.setTextSize(TypedValue.COMPLEX_UNIT_SP, resultSizeSeek.getProgress());
-                resultText2.setTextSize(TypedValue.COMPLEX_UNIT_SP, resultSizeSeek.getProgress());
+            case R.id.hashingResultSizeSeek:
+                hashingResultText.setTextSize(TypedValue.COMPLEX_UNIT_SP, resultSizeSeek.getProgress());
                 break;
 
             default:

@@ -26,7 +26,7 @@
         />
 
     <SeekBar
-        android:id="@+id/resultSizeSeek"
+        android:id="@+id/hashingResultSizeSeek"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="20dp"
@@ -35,13 +35,8 @@
         />
 
     <TextView
-        android:id="@+id/resultTextView1"
-        android:text="D41D 8CD9"
+        android:id="@+id/hashingResultTextView"
+        android:text="D41D 8CD9\n8F00 B204"
         style="@style/HashingResultTheme"
         />
-
-    <TextView
-        android:id="@+id/resultTextView2"
-        android:text="8F00 B204"
-        style="@style/HashingResultTheme"/>
 </LinearLayout>

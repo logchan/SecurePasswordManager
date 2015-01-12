@@ -13,9 +13,8 @@ public class HashingResultActivityTest extends ActivityInstrumentationTestCase2<
 
     private SeekBar resultSizeSeek;
 
-    private TextView resultText1;
+    private TextView resultText;
 
-    private TextView resultText2;
 
     public HashingResultActivityTest() {
         super(HashingResultActivity.class);
@@ -27,9 +26,8 @@ public class HashingResultActivityTest extends ActivityInstrumentationTestCase2<
 
         activity = getActivity();
 
-        resultSizeSeek = (SeekBar) activity.findViewById(R.id.resultSizeSeek);
-        resultText1 = (TextView) activity.findViewById(R.id.resultTextView1);
-        resultText2 = (TextView) activity.findViewById(R.id.resultTextView2);
+        resultSizeSeek = (SeekBar) activity.findViewById(R.id.hashingResultSizeSeek);
+        resultText = (TextView) activity.findViewById(R.id.hashingResultTextView);
     }
 
     public void testPreConditions() {

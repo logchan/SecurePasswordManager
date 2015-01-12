@@ -18,23 +18,23 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".SchemeListActivity"
-            android:label="@string/title_activity_scheme_list" >
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".SchemeEditActivity"
-            android:label="@string/title_activity_scheme_edit" >
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".InformationInputActivity"
-            android:label="@string/title_activity_information_input" >
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".HashingResultActivity"
-            android:label="@string/title_activity_hashing_result" >
+            android:label="@string/app_name" >
         </activity>
     </application>
 

@@ -1,5 +1,6 @@
 package hk.ust.ustac.team8.applicationutility;
 
+import hk.ust.ustac.team8.exception.SchemeInfoNotFoundException;
 import hk.ust.ustac.team8.exception.SchemeNotFoundException;
 import hk.ust.ustac.team8.generalutility.FileUtility;
 import hk.ust.ustac.team8.hashingscheme.HashingScheme;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.LinkedList;
 
@@ -19,6 +21,8 @@ import java.util.LinkedList;
  */
 public final class AppFileUtility {
 
+    public final static String SCHEME_FILE_EXT = ".hs";
+    public final static String SCHEME_INFO_FILE_EXT = ".hsif";
     /**
      * Private constructor to prevent creating instance
      */
@@ -46,6 +50,59 @@ public final class AppFileUtility {
         }
 
         return sDir;
+    }
+
+    /**
+     * Read the file content, all lines are separated by '\n'. Return null if failed.
+     * @param file an existing file
+     * @return File content in a String, null if failed reading
+     */
+    private static String getFileContent(File file) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            StringBuilder builder = new StringBuilder();
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+                builder.append('\n');
+            }
+
+            return builder.toString();
+        }
+        catch (FileNotFoundException ex) {
+            return null;
+        }
+        catch (IOException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * Make sure that the scheme folder exists.
+     * Throw an exception if it doesn't or if it is not a directory.
+     *
+     * @param schemeDir the File object representing the scheme dir
+     * @param caller the caller of this method, used to generate exception message
+     * @throws SchemeNotFoundException if the schemeDir is not found or it is not a directory.
+     */
+    private static void assertSchemeFolderExists(File schemeDir, String caller) throws SchemeNotFoundException {
+        if (!schemeDir.exists() || !schemeDir.isDirectory()) {
+            throw new SchemeNotFoundException("Scheme dir not found for " + caller + ":" + schemeDir.getAbsolutePath());
+        }
+    }
+
+    /**
+     * Make sure that the scheme info file exists.
+     * Throw an exception if it doesn't or if it is not a file.
+     *
+     * @param infoFile the File representing the saved info file
+     * @param caller the caller of this method, used to generate exception message
+     * @throws SchemeInfoNotFoundException if the infoFile is not found or it is not a file.
+     */
+    private static void assertSchemeInfoFileExists(File infoFile, String caller) throws SchemeInfoNotFoundException {
+        if (!infoFile.exists() || !infoFile.isFile()) {
+            throw new SchemeInfoNotFoundException("Scheme info file not found for " + caller + ":" + infoFile.getAbsolutePath());
+        }
     }
 
     /**
@@ -78,7 +135,7 @@ public final class AppFileUtility {
         }
 
         try {
-            File hsFile = new File(tsDir, scheme.getName() + ".hs");
+            File hsFile = new File(tsDir, scheme.getName() + SCHEME_FILE_EXT);
             hsFile.delete();
             hsFile.createNewFile();
 
@@ -109,7 +166,7 @@ public final class AppFileUtility {
         String schemeName = dir.getName();
         File hsFile = null;
         for (File file : dir.listFiles()) {
-            if (file.isFile() && file.getName().equals(schemeName + ".hs")) {
+            if (file.isFile() && file.getName().equals(schemeName + SCHEME_FILE_EXT)) {
                 hsFile = file;
                 break;
             }
@@ -119,29 +176,18 @@ public final class AppFileUtility {
         }
 
         // read and parse file
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(hsFile));
-            StringBuilder builder = new StringBuilder();
-            String line = "";
-            while ((line = reader.readLine()) != null) {
-                builder.append(line);
-                builder.append('\n');
-            }
+        String fileContent = getFileContent(hsFile);
+        if (fileContent == null) {
+            return null;
+        }
 
-            HashingScheme scheme = HashingScheme.fromStorageString(builder.toString());
-            // correct the scheme name
-            if (!scheme.getName().equals(schemeName)) {
-                scheme.setName(schemeName);
-            }
-            return scheme;
+        HashingScheme scheme = HashingScheme.fromStorageString(fileContent);
+        // correct the scheme name
+        if (!scheme.getName().equals(schemeName)) {
+            scheme.setName(schemeName);
         }
-        catch (FileNotFoundException ex) {
-            // based on what we have done above, this shall never happen
-            return null;
-        }
-        catch (IOException ex) {
-            return null;
-        }
+
+        return scheme;
     }
 
     /**
@@ -209,17 +255,15 @@ public final class AppFileUtility {
         File tsFile = null;
 
         // find old scheme
-        if (!tsDir.exists() || !tsDir.isDirectory()) {
-            throw new SchemeNotFoundException("Scheme dir not found for renameSchemeFile:" + oldName);
-        }
+        assertSchemeFolderExists(tsDir, "renameSchemeFile");
 
         for (File sub : tsDir.listFiles()) {
-            if (sub.isFile() && sub.getName().equals(oldName + ".hs")) {
+            if (sub.isFile() && sub.getName().equals(oldName + SCHEME_FILE_EXT)) {
                 tsFile = sub;
             }
         }
         if (tsFile == null) {
-            throw new SchemeNotFoundException("Scheme file (.hs) not found for renameSchemeFile:" + oldName);
+            throw new SchemeNotFoundException("Scheme file (." + SCHEME_FILE_EXT + ") not found for renameSchemeFile:" + oldName);
         }
 
         // check existance of new scheme
@@ -229,7 +273,7 @@ public final class AppFileUtility {
         }
         else {
             // rename file then folder
-            File ntsFile = new File(tsDir, newName + ".hs");
+            File ntsFile = new File(tsDir, newName + SCHEME_FILE_EXT);
             if (tsFile.renameTo(ntsFile)) {
                 // rename file success
                 // now rename folder
@@ -240,7 +284,7 @@ public final class AppFileUtility {
                 else {
                     // rename folder failed,
                     // try reverting process
-                    tsFile = new File(tsDir, oldName + ".hs");
+                    tsFile = new File(tsDir, oldName + SCHEME_FILE_EXT);
                     ntsFile.renameTo(tsFile);
                     return false;
                 }
@@ -250,5 +294,139 @@ public final class AppFileUtility {
                 return false;
             }
         }
+    }
+
+    /**
+     * Get a list of the names of saved info of a scheme. That is, the filename without extension of
+     * all .hsif files in the scheme folder.
+     *
+     * @param context the app context
+     * @param schemeName the name of scheme
+     * @return a linkedlist of the names of all saved info
+     * @throws SchemeNotFoundException if the scheme folder does not exist
+     */
+    public static LinkedList<String> getAllSavedInfoOfScheme(Context context, String schemeName) throws SchemeNotFoundException {
+        File sDir = getSchemeDir(context);
+        File tsDir = new File(sDir, schemeName);
+
+        assertSchemeFolderExists(tsDir, "getAllSavedInfoOfScheme");
+
+        LinkedList<String> names = new LinkedList<String>();
+        int extLength = SCHEME_INFO_FILE_EXT.length();
+
+        for (File file : tsDir.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File file, String name) {
+                return name.endsWith(SCHEME_INFO_FILE_EXT);
+            }
+        })) {
+            String fileName = file.getName();
+            names.add(fileName.substring(0, fileName.length() - extLength));
+        }
+
+        return names;
+    }
+
+    /**
+     * Get the file content of a saved info of a scheme, given the name of scheme and name of saved info.
+     *
+     * @param context the app context
+     * @param schemeName the name of scheme
+     * @param infoName the name of info
+     * @return the content of info, null if file exists but can not be read
+     * @throws SchemeNotFoundException if the scheme folder does not exist
+     * @throws SchemeInfoNotFoundException if the scheme info file does not exist
+     */
+    public static String getOneSavedInfoOfScheme(Context context, String schemeName, String infoName) throws SchemeNotFoundException, SchemeInfoNotFoundException {
+        File sDir = getSchemeDir(context);
+        File tsDir = new File(sDir, schemeName);
+        assertSchemeFolderExists(tsDir, "getOneSavedInfoOfScheme");
+
+        File infoFile = new File(tsDir, infoName + SCHEME_INFO_FILE_EXT);
+        assertSchemeInfoFileExists(infoFile, "getOneSavedInfoOfScheme");
+
+        return getFileContent(infoFile);
+    }
+
+    /**
+     * Save an info of one scheme. Old file will be overwritten (deleted and re-create) if info of the
+     * same name already exists.
+     *
+     * @param context the app context
+     * @param scheme the scheme whose filled info are to be saved
+     * @param infoName the name of info
+     * @return true if succeeded, false otherwise
+     * @throws SchemeNotFoundException if the scheme folder does not exist
+     */
+    public static boolean saveInfoOfScheme(Context context, HashingScheme scheme, String infoName) throws SchemeNotFoundException {
+        File sDir = getSchemeDir(context);
+        String schemeName = scheme.getName();
+        File tsDir = new File(sDir, schemeName);
+
+        assertSchemeFolderExists(tsDir, "saveInfoOfScheme");
+
+        try {
+            File infoFile = new File(tsDir, infoName + SCHEME_INFO_FILE_EXT);
+            infoFile.delete();
+            infoFile.createNewFile();
+
+            FileOutputStream outputStream = new FileOutputStream(infoFile);
+            outputStream.write(scheme.exportFieldValues().getBytes());
+            outputStream.close();
+            return true;
+        }
+        catch (Exception ex) {
+            return false;
+        }
+    }
+
+    /**
+     * Delete an info of a scheme
+     *
+     * @param context the app context
+     * @param scheme the scheme whose saved info are to be deleted
+     * @param infoName the name of info
+     * @return true if succeeded, false otherwise
+     * @throws SchemeNotFoundException if the scheme folder does not exist
+     * @throws SchemeInfoNotFoundException if the scheme info file does not exist
+     */
+    public static boolean deleteInfoOfScheme(Context context, HashingScheme scheme, String infoName) throws SchemeNotFoundException, SchemeInfoNotFoundException {
+        File sDir = getSchemeDir(context);
+        String schemeName = scheme.getName();
+        File tsDir = new File(sDir, schemeName);
+        assertSchemeFolderExists(tsDir, "deleteInfoOfScheme");
+
+        File infoFile = new File(tsDir, infoName + SCHEME_INFO_FILE_EXT);
+        assertSchemeInfoFileExists(infoFile, "deleteInfoOfScheme");
+
+        return infoFile.delete();
+    }
+
+    /**
+     * Rename an info of a scheme. If a saved info of the same name exists, it fails (returns false).
+     *
+     * @param context the app context
+     * @param scheme the scheme whose saved info are to be renamed
+     * @param oldInfoName the old name of info
+     * @param newInfoName the new name of info
+     * @return true if succeeded, false otherwise
+     * @throws SchemeNotFoundException if the scheme folder does not exist
+     * @throws SchemeInfoNotFoundException if the scheme info file does not exist
+     */
+    public static boolean renameInfoOfScheme(Context context, HashingScheme scheme, String oldInfoName, String newInfoName) throws SchemeNotFoundException, SchemeInfoNotFoundException {
+        File sDir = getSchemeDir(context);
+        String schemeName = scheme.getName();
+        File tsDir = new File(sDir, schemeName);
+        assertSchemeFolderExists(tsDir, "renameInfoOfScheme");
+
+        File infoFile = new File(tsDir, oldInfoName + SCHEME_INFO_FILE_EXT);
+        assertSchemeInfoFileExists(infoFile, "deleteInfoOfScheme");
+
+        File newInfoFile = new File(tsDir, newInfoName + SCHEME_INFO_FILE_EXT);
+        if (newInfoFile.exists()) {
+            return false;
+        }
+
+        return infoFile.renameTo(newInfoFile);
     }
 }

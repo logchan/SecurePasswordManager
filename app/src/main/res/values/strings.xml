@@ -5,18 +5,20 @@
     <string name="hello_world">Hello world!</string>
     <string name="welcome">    Weclome to the SecurePasswordManager!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_scheme_list">SchemeListActivity</string>
-    <string name="title_activity_scheme_edit">SchemeEditActivity</string>
-    <string name="title_activity_information_input">InformationInputActivity</string>
+    <string name="title_activity_main">Secure Password Manager</string>
+    <string name="title_activity_scheme_list">All Schemes</string>
+    <string name="title_activity_scheme_edit">Edit Scheme</string>
+    <string name="title_activity_information_input">Fill Information</string>
     <string name="info_init">Loading...</string>
     <string name="title_activity_hashing_result">Hashing Result</string>
     <string name="hashing_result_change_fontsize">Change text size</string>
     <string name="go_back">Back</string>
     <string name="done">Done</string>
     <string name="copy_hashing_result">Copy Result</string>
-    <string name="title_activity_setting">SettingActivity</string>
+    <string name="title_activity_setting">Settings</string>
     <string name="view_Scheme">View Scheme</string>
     <string name="edit_Scheme">Edit Scheme</string>
     <string name="description">Description</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

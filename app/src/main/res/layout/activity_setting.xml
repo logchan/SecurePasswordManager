@@ -10,8 +10,7 @@
                 tools:context="hk.ust.ustac.team8.securepasswordmanager.SettingActivity">
 
     <TextView
-        android:text="@string/hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:text="@string/title_activity_setting"
+        style="@style/PageTitle"/>
 
 </LinearLayout>

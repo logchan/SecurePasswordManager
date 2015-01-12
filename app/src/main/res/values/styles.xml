@@ -27,4 +27,11 @@
         <item name="android:padding">5dp</item>
         <item name="android:typeface">monospace</item>
     </style>
+
+    <style name="PageTitle" parent="AllControlTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:paddingBottom">20dp</item>
+    </style>
 </resources>

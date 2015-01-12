@@ -40,6 +40,11 @@
         style="@style/HashingResultTheme"
         />
 
+    <Button
+        style="@style/ButtonTheme"
+        android:text="@string/copy_hashing_result"
+        android:id="@+id/hashingResultCopyBtn"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,11 +52,13 @@
         android:paddingTop="15dp"
         >
         <Button
-            style="@style/ButtonTheme"
-            android:text="@string/go_back"/>
+            style="@style/ButtonTheme.Filled"
+            android:text="@string/go_back"
+            android:id="@+id/hashingResultBackBtn"/>
         <Button
-            style="@style/ButtonTheme"
-            android:text="@string/done"/>
+            style="@style/ButtonTheme.Filled"
+            android:text="@string/done"
+            android:id="@+id/hashingResultDoneBtn"/>
     </LinearLayout>
 
 </LinearLayout>

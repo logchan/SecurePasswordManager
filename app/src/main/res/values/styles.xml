@@ -11,10 +11,13 @@
     </style>
 
     <style name="ButtonTheme" parent="AllControlTheme">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_weight">1</item>
         <item name="android:paddingLeft">30dp</item>
         <item name="android:paddingRight">30dp</item>
+    </style>
+
+    <style name="ButtonTheme.Filled" parent="ButtonTheme">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_weight">1</item>
     </style>
 
     <style name="HashingResultTheme" parent="AllControlTheme">

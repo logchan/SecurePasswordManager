@@ -13,4 +13,5 @@
     <string name="hashing_result_change_fontsize">Change text size</string>
     <string name="go_back">Back</string>
     <string name="done">Done</string>
+    <string name="copy_hashing_result">Copy Result</string>
 </resources>

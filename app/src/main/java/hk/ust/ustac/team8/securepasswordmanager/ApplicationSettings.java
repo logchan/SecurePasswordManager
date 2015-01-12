@@ -25,7 +25,7 @@ public class ApplicationSettings {
         return LangUtility.getSimpleStringRepresentation(this, EXPORT_FIELDS);
     }
 
-    public void importString(String input) {
-
+    public static ApplicationSettings importString(String input) {
+        return (ApplicationSettings)LangUtility.parseObjectFromSimpleString(ApplicationSettings.class, input);
     }
 }

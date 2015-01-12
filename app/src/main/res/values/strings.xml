@@ -11,4 +11,6 @@
     <string name="info_init">Loading...</string>
     <string name="title_activity_hashing_result">Hashing Result</string>
     <string name="hashing_result_change_fontsize">Change text size</string>
+    <string name="go_back">Back</string>
+    <string name="done">Done</string>
 </resources>

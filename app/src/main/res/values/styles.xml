@@ -5,9 +5,20 @@
 
     </style>
 
-    <style name="HashingResultTheme" parent="AppTheme">
-        <item name="android:layout_width">match_parent</item>
+    <style name="AllControlTheme" parent="AppTheme">
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="ButtonTheme" parent="AllControlTheme">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:paddingLeft">30dp</item>
+        <item name="android:paddingRight">30dp</item>
+    </style>
+
+    <style name="HashingResultTheme" parent="AllControlTheme">
+        <item name="android:layout_width">match_parent</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">22sp</item>
         <item name="android:padding">5dp</item>

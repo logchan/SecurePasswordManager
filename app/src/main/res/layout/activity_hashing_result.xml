@@ -39,4 +39,19 @@
         android:text="D41D 8CD9\n8F00 B204"
         style="@style/HashingResultTheme"
         />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="15dp"
+        >
+        <Button
+            style="@style/ButtonTheme"
+            android:text="@string/go_back"/>
+        <Button
+            style="@style/ButtonTheme"
+            android:text="@string/done"/>
+    </LinearLayout>
+
 </LinearLayout>

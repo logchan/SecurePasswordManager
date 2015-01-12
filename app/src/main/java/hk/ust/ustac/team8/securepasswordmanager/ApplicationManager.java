@@ -21,6 +21,7 @@ public final class ApplicationManager {
 
     private LinkedList<HashingScheme> schemes = null;
 
+    private ApplicationSettings settings;
     /**
      * Private constructor to avoid more than one instance
      */
@@ -42,6 +43,7 @@ public final class ApplicationManager {
 
         ApplicationManager.context = context;
         instance = new ApplicationManager();
+        instance.settings = new ApplicationSettings();
     }
 
     /**
@@ -68,5 +70,14 @@ public final class ApplicationManager {
      */
     public LinkedList<HashingScheme> getAllSchemes() {
         return schemes;
+    }
+
+    /**
+     * Get the settings of application
+     *
+     * @return the settings
+     */
+    public ApplicationSettings getSettings() {
+        return settings;
     }
 }

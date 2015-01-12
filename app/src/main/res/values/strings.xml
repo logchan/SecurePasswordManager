@@ -22,5 +22,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="password_generation">Generate Password</string>
     <string name="saved_information">Saved Inforamtion</string>
+    <string name="field_name">field</string>
 
 </resources>

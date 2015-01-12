@@ -46,6 +46,10 @@ public final class ApplicationManager {
         instance.settings = new ApplicationSettings();
     }
 
+    public static boolean alreadySetUp() {
+        return instance != null;
+    }
+
     /**
      * Get the instance of this class. The class shall have been setup by calling setUp().
      * Otherwise, null will be returned.

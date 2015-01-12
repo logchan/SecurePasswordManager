@@ -5,3 +5,5 @@
 .DS_Store
 /build
 *.~vsdx
+.idea/gradle.xml
+.idea/gradle.xml

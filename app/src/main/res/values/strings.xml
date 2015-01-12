@@ -8,7 +8,7 @@
     <string name="title_activity_main">Secure Password Manager</string>
     <string name="title_activity_scheme_list">Choose a scheme</string>
     <string name="title_activity_scheme_edit">Edit Scheme</string>
-    <string name="title_activity_information_input">Fill Information</string>
+    <string name="title_activity_information_input">Fill information</string>
     <string name="info_init">Loading...</string>
     <string name="title_activity_hashing_result">Hashing Result</string>
     <string name="hashing_result_change_fontsize">Change text size</string>

@@ -32,6 +32,10 @@
             android:name=".InformationInputActivity"
             android:label="@string/title_activity_information_input" >
         </activity>
+        <activity
+            android:name=".HashingResultActivity"
+            android:label="@string/title_activity_hashing_result" >
+        </activity>
     </application>
 
 </manifest>

@@ -22,5 +22,5 @@
     <string name="password_generation">Generate Password</string>
     <string name="saved_information">Saved Inforamtion</string>
     <string name="manage_schemes">Manage Schemes</string>
-
+    <string name="field_name">field</string>
 </resources>

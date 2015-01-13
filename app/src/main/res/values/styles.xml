@@ -11,8 +11,8 @@
     </style>
 
     <style name="ButtonTheme" parent="AllControlTheme">
-        <item name="android:paddingLeft">30dp</item>
-        <item name="android:paddingRight">30dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
         <item name="android:gravity">center</item>
     </style>
 

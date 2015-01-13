@@ -35,16 +35,20 @@
 
             <Button
                 style="@style/ButtonTheme.Filled"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
                 android:text="@string/load_saved_info"
                 android:id="@+id/infoFillLoadBtn"
                 />
 
             <Button
                 style="@style/ButtonTheme.Filled"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:text="@string/save_info"
+                android:id="@+id/infoFillSaveBtn"
+                />
+
+            <Button
+                style="@style/ButtonTheme.Filled"
+                android:paddingLeft="1dp"
+                android:paddingRight="1dp"
                 android:text="@string/proceed"
                 android:id="@+id/infoFillProceedBtn"
                 />

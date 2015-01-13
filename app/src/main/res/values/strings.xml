@@ -47,8 +47,10 @@
     <!-- Info Input Page -->
     <string name="title_activity_information_input">Fill information</string>
     <string name="subtitle_activity_information_input">Tap on each field to fill</string>
-    <string name="load_saved_info">Load Saved</string>
+    <string name="save_info">Save</string>
+    <string name="load_saved_info">Load</string>
     <string name="proceed">Proceed</string>
+    <string name="field_hint">Fill value</string>
 
     <!-- Result Page -->
     <string name="title_activity_hashing_result">Hashing Result</string>

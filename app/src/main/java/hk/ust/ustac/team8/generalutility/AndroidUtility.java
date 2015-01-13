@@ -110,16 +110,15 @@ public final class AndroidUtility {
         builder.show();
     }
 
-    public static void activityExceptionExit(Activity activity, String extraInfo) {
+    public static void activityExceptionExit(final Activity activity, String extraInfo) {
         String content = "By activity " + activity.getLocalClassName() + "\n" + extraInfo;
         AlertDialog dialog = createSimpleAlertDialog(activity, activity.getString(R.string.exception_exit),
                 content, activity.getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // do nothing
+                        activity.finish();
                     }
                 }, null, null);
         dialog.show();
-        activity.finish();
     }
 }

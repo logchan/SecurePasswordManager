@@ -8,10 +8,6 @@
     <string name="action_settings">Settings</string>
     <string name="action_about">About</string>
 
-    <!-- Page titles -->
-    <string name="title_activity_scheme_edit">Edit Scheme</string>
-    <string name="title_activity_setting">Settings</string>
-
     <!-- Common -->
     <string name="go_back">Back</string>
     <string name="done">Done</string>
@@ -25,6 +21,9 @@
     <string name="generate_password">Generate Password</string>
     <string name="manage_saved_information">Manage Saved Information</string>
     <string name="manage_schemes">Manage Schemes</string>
+
+    <!-- Setting page -->
+    <string name="title_activity_setting">Settings</string>
 
     <!-- Scheme List Page -->
     <string name="title_activity_scheme_list">Choose a scheme</string>
@@ -41,8 +40,13 @@
 
     <!-- Result Page -->
     <string name="title_activity_hashing_result">Hashing Result</string>
+    <string name="subtitle_activity_hashing_result">Don\'t let others see!</string>
     <string name="hashing_result_change_fontsize">Change text size</string>
     <string name="copy_hashing_result">Copy Result</string>
-    <string name="subtitle_activity_hashing_result">Don\'t let others see!</string>
+
+    <!-- Scheme Edit Page -->
+    <string name="title_activity_scheme_edit">Edit Scheme</string>
+    <string name="subtitle_activity_scheme_edit">Tap the items to make changes</string>
+    <string name="add_field">Add field</string>
 
 </resources>

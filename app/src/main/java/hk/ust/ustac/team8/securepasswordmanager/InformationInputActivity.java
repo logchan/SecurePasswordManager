@@ -75,12 +75,12 @@ public class InformationInputActivity extends Activity implements Button.OnClick
         for (int i = 0; i < fieldCount; ++i) {
             HashingSchemeField field = scheme.getField(i);
             HashMap<String, String> item= new HashMap<String, String>();
-            item.put("Name",field.getName());
-            item.put("Description",field.getDescription());
+            item.put("name",field.getName());
+            item.put("description",field.getDescription());
             fieldList.add(item);
         }
         adapter = new SimpleAdapter(this, fieldList, android.R.layout.simple_list_item_2,
-                new String[] { "Name", "Description"}, new int[] { android.R.id.text1, android.R.id.text2});
+                new String[] { "name", "description"}, new int[] { android.R.id.text1, android.R.id.text2});
         listView.setAdapter(adapter);
 
     }

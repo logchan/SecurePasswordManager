@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -6,143 +6,54 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingBottom="@dimen/activity_vertical_margin"
+                android:orientation="vertical"
                 tools:context="hk.ust.ustac.team8.securepasswordmanager.SchemeEditActivity">
 
     <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/edit_Scheme"
-        android:id="@+id/textView4"
-        android:gravity="center_horizontal"
-        android:layout_alignParentEnd="true"
-        android:textSize="20dp" />
-    <TableLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView4"
-        android:layout_alignParentStart="true"
-        android:id="@+id/tableLayout">
+        style="@style/PageTitle"
+        android:text="@string/title_activity_scheme_edit"
+        />
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center_horizontal">
+    <TextView
+        style="@style/PageSubTitle"
+        android:text="@string/subtitle_activity_scheme_edit"
+        />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent">
 
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Name"
-                android:id="@+id/button4"
-                android:layout_gravity="right"/>
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="20"
-                android:id="@+id/field_name"
-                android:maxLines="1"
-                android:textSize="20sp"
-                android:gravity="right" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/schemeEditBottomLinear"
+            >
 
             <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Description"
-                android:id="@+id/button5"
-                android:layout_gravity="right"
+                style="@style/ButtonTheme.Filled"
+                android:text="@string/go_back"
+                android:id="@+id/schemeEditBackBtn"
                 />
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textShortMessage"
-                android:ems="10"
-                android:id="@+id/field_description"
-                android:maxLines="1"
-                android:textSize="20sp" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center_horizontal">
-
             <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Crypto"
-                android:id="@+id/button6"
-                android:layout_gravity="right"/>
+                style="@style/ButtonTheme.Filled"
+                android:layout_weight="0.5"
+                android:text="@string/add_field"
+                android:id="@+id/schemeEditAddBtn"
+                />
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textShortMessage"
-                android:ems="10"
-                android:id="@+id/field_crypto"
-                android:maxLines="1"
-                android:textSize="20sp" />
+        </LinearLayout>
 
-        </TableRow>
-
-        <TableRow
-            android:layout_width="fill_parent"
+        <ListView
+            android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:gravity="center_horizontal">
+            android:layout_alignParentTop="true"
+            android:layout_above="@id/schemeEditBottomLinear"
+            android:id="@+id/schemeEditList"
+            />
 
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Transform"
-                android:id="@+id/button7"
-                android:layout_gravity="right"/>
+    </RelativeLayout>
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textShortMessage"
-                android:ems="10"
-                android:id="@+id/field_transform"
-                android:maxLines="1"
-                android:textSize="20sp" />
-            </TableRow>
-
-    </TableLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="15dp"
-        android:layout_below="@+id/tableLayout"
-        android:layout_alignParentStart="true">
-
-        <Button
-            style="@style/ButtonTheme.Filled"
-            android:text="@string/go_back"
-            android:id="@+id/button8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <Button
-            style="@style/ButtonTheme.Filled"
-            android:text="@string/done"
-            android:id="@+id/button9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

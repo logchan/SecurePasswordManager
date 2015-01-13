@@ -20,5 +20,7 @@
     <string name="edit_Scheme">Edit Scheme</string>
     <string name="description">Description</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="password_generation">Generate Password</string>
+    <string name="saved_information">Saved Inforamtion</string>
 
 </resources>

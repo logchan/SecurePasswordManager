@@ -16,7 +16,7 @@
 
     <TextView
         style="@style/PageSubTitle"
-        android:text="Choose a function to begin"
+        android:text="@string/subtitle_activity_main"
         />
 
     <Button
@@ -33,6 +33,5 @@
         style="@style/ButtonTheme.MainActivity"
         android:text="@string/manage_saved_information"
         />
-
 
 </LinearLayout>

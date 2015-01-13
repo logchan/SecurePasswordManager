@@ -3,6 +3,8 @@ package hk.ust.ustac.team8.securepasswordmanager;
 import hk.ust.ustac.team8.generalutility.LangUtility;
 import hk.ust.ustac.team8.hashingscheme.HashingScheme;
 
+import android.util.Log;
+
 /**
  * A wrapper class that contains all settings of the application
  *
@@ -15,9 +17,16 @@ public class ApplicationSettings {
 
     public HashingScheme currentScheme;
 
+    public ApplicationState lastState = ApplicationState.INIT;
+
+    public ApplicationState currentState = ApplicationState.INIT;
+
+    public Object[] carriedInfo = {};
+
     public boolean hideResult = false;
 
     public int resultFontsize = 22;
+
 
     public ApplicationSettings()
     {

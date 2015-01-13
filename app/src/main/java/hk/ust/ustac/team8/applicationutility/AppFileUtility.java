@@ -4,6 +4,7 @@ import hk.ust.ustac.team8.exception.SchemeInfoNotFoundException;
 import hk.ust.ustac.team8.exception.SchemeNotFoundException;
 import hk.ust.ustac.team8.generalutility.FileUtility;
 import hk.ust.ustac.team8.hashingscheme.HashingScheme;
+import hk.ust.ustac.team8.securepasswordmanager.ApplicationSettings;
 
 import android.content.Context;
 
@@ -21,6 +22,7 @@ import java.util.LinkedList;
  */
 public final class AppFileUtility {
 
+    public final static String SETTING_FILE = "spm.settings";
     public final static String SCHEME_FILE_EXT = ".hs";
     public final static String SCHEME_INFO_FILE_EXT = ".hsif";
     /**
@@ -428,5 +430,45 @@ public final class AppFileUtility {
         }
 
         return infoFile.renameTo(newInfoFile);
+    }
+
+    /**
+     * Save the application settings
+     * @param context the app context
+     * @param settings the settings to be saved
+     */
+    public static boolean saveAppSettings(Context context, ApplicationSettings settings) {
+        File sFile = new File(context.getFilesDir(), SETTING_FILE);
+
+        if (sFile.exists()) {
+            sFile.delete();
+        }
+
+        try {
+            sFile.createNewFile();
+            FileOutputStream outputStream = new FileOutputStream(sFile);
+            outputStream.write(settings.exportString().getBytes());
+            outputStream.close();
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Read app settings.
+     * @param context the app context
+     * @return The app settings, null if settings not exist
+     */
+    public static ApplicationSettings loadAppSettings(Context context) {
+        File sFile = new File(context.getFilesDir(), SETTING_FILE);
+
+        if (!sFile.exists() || sFile.isDirectory()) {
+            return null;
+        }
+
+        String content = getFileContent(sFile);
+        return ApplicationSettings.importString(content);
     }
 }

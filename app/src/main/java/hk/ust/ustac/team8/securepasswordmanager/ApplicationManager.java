@@ -4,7 +4,9 @@ import hk.ust.ustac.team8.applicationutility.AppFileUtility;
 import hk.ust.ustac.team8.generalutility.LangUtility;
 import hk.ust.ustac.team8.hashingscheme.HashingScheme;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 
 import java.util.LinkedList;
 
@@ -101,5 +103,34 @@ public final class ApplicationManager {
      */
     public ApplicationSettings getSettings() {
         return settings;
+    }
+
+    /**
+     * Load the application settings from file
+     */
+    public void loadAppSettings() {
+        settings = AppFileUtility.loadAppSettings(context);
+        if (settings == null) {
+            settings = new ApplicationSettings();
+            AppFileUtility.saveAppSettings(context, settings);
+        }
+    }
+
+    /**
+     * Save the current application settings to file
+     */
+    public void saveAppSettings() {
+        AppFileUtility.saveAppSettings(context, settings);
+    }
+
+    public void switchActivity(Activity currentActivity, Class nextActivity,
+                               ApplicationState newState, Object ... carriedInfo) {
+
+        settings.lastState = settings.currentState;
+        settings.currentState = newState;
+        settings.carriedInfo = carriedInfo == null ? new Object[] { } : carriedInfo;
+
+        Intent intent = new Intent(currentActivity, nextActivity);
+        currentActivity.startActivity(intent);
     }
 }

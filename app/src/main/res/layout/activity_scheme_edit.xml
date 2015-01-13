@@ -33,13 +33,12 @@
 
             <Button
                 style="@style/ButtonTheme.Filled"
-                android:text="@string/go_back"
-                android:id="@+id/schemeEditBackBtn"
+                android:text="@string/done"
+                android:id="@+id/schemeEditDoneBtn"
                 />
 
             <Button
                 style="@style/ButtonTheme.Filled"
-                android:layout_weight="0.5"
                 android:text="@string/add_field"
                 android:id="@+id/schemeEditAddBtn"
                 />

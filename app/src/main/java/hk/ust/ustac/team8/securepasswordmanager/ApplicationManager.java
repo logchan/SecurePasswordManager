@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -106,6 +107,71 @@ public final class ApplicationManager {
     }
 
     /**
+     * Get the scheme specified by the name.
+     * @param name the name of scheme
+     * @return the scheme, null if not found
+     */
+    public HashingScheme getSchemeByName(String name) {
+        for (HashingScheme scheme : schemes) {
+            if (scheme.getName().equals(name)) {
+                return scheme;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Save the scheme.
+     * @param scheme the scheme to save
+     * @return true if saved successfully, false otherwise
+     */
+    public boolean saveScheme(HashingScheme scheme) {
+        if (AppFileUtility.saveScheme(context, scheme)) {
+            reloadAllSchemes();
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean renameScheme(String oldName, String newName) {
+        boolean fileSuccess = false;
+        try {
+            fileSuccess = AppFileUtility.renameSchemeFile(context, oldName, newName);
+            return fileSuccess;
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Delete the scheme specified by the name, then reload all schemes
+     * @param name the name of scheme to be deleted
+     * @return true if successfully deleted, false otherwise
+     */
+    public boolean deleteSchemeByName(String name) {
+        boolean fileDeleteSuccess = false;
+
+        // try to delete scheme files
+        try {
+            fileDeleteSuccess = AppFileUtility.deleteScheme(context, name);
+        }
+        catch (Exception e) {
+            return false;
+        }
+
+        if (fileDeleteSuccess) {
+            reloadAllSchemes();
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
      * Load the application settings from file
      */
     public void loadAppSettings() {
@@ -121,6 +187,14 @@ public final class ApplicationManager {
      */
     public void saveAppSettings() {
         AppFileUtility.saveAppSettings(context, settings);
+    }
+
+    public void popState(ApplicationState last) {
+        if (last == null) {
+            last = settings.currentState;
+        }
+        settings.currentState = settings.lastState;
+        settings.lastState = last;
     }
 
     public void switchActivity(Activity currentActivity, Class nextActivity,

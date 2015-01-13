@@ -54,6 +54,12 @@ public class SchemeListActivity extends Activity implements Button.OnClickListen
 
         // get items and set adapter
         manager.reloadAllSchemes();
+        reloadAllItems();
+    }
+
+    private void reloadAllItems() {
+        schemeList.clear();
+
         LinkedList<HashingScheme> schemes = manager.getAllSchemes();
         for (HashingScheme scheme : schemes) {
             HashMap<String,String> item = new HashMap<String,String>();
@@ -63,18 +69,23 @@ public class SchemeListActivity extends Activity implements Button.OnClickListen
         }
 
         adapter = new SimpleAdapter(this, schemeList, android.R.layout.simple_list_item_2,
-                new String[] { "name", "description"}, new int[] { android.R.id.text1, android.R.id.text2});
+                new String[] { "name", "description" }, new int[] { android.R.id.text1, android.R.id.text2});
         listView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.schemeListBackBtn:
-                //TODO: implement back
+                onBackPressed();
                 break;
             case R.id.schemeListNewSchemeBtn:
-                //TODO: implement new
+                manager.switchActivity(this, SchemeEditActivity.class, ApplicationState.EDIT_SCHEME_NEW);
                 break;
             default:
                 break;
@@ -84,13 +95,81 @@ public class SchemeListActivity extends Activity implements Button.OnClickListen
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         HashMap<String, String> item = (HashMap<String, String>) listView.getAdapter().getItem(position);
-        //TODO: implement scheme chosen
+        switch (manager.getSettings().currentState) {
+            case SELECT_SCHEME_FOR_EDIT:
+                manager.switchActivity(this, SchemeEditActivity.class, ApplicationState.EDIT_SCHEME_CURRENT,
+                        item.get("name"));
+                break;
+            case SELECT_SCHEME_FOR_PASSWORD_GEN:
+                manager.switchActivity(this, InformationInputActivity.class, ApplicationState.INPUT_INFO_FOR_PASSWORD_GEN,
+                        item.get("name"));
+                break;
+            case SELECT_SCHEME_FOR_LIST_INFO:
+                manager.switchActivity(this, ListSavedInfoActivity.class, ApplicationState.LIST_INFO,
+                        item.get("name"));
+                break;
+        }
     }
 
     @Override
     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
-        HashMap<String, String> item = (HashMap<String, String>) listView.getAdapter().getItem(position);
-        //TODO: implement scheme edit/delete
+        final String[] options =  new String[] { getString(R.string.edit_this_scheme),
+                getString(R.string.delete_this_scheme),
+        };
+
+        final HashMap<String, String> item = (HashMap<String, String>) listView.getAdapter().getItem(position);
+        final Activity activity = this;
+
+        // create a dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(item.get("name"));
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                String selected = options[which];
+                if (selected.equals(getString(R.string.edit_this_scheme))) {
+                    manager.switchActivity(activity , SchemeEditActivity.class, ApplicationState.EDIT_SCHEME_CURRENT,
+                            item.get("name"));
+                }
+                else if (selected.equals(getString(R.string.delete_this_scheme))) {
+                    promptDeleteScheme(item.get("name"));
+                }
+            }
+        });
+        builder.show();
+
         return true;
+    }
+
+    private void promptDeleteScheme(final String schemeName) {
+        AlertDialog dialog = AndroidUtility.createSimpleAlertDialog(this, "Delete \"" + schemeName + "\"",
+                getString(R.string.are_you_sure), getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // yes
+                        deleteScheme(schemeName);
+                    }
+                }, getString(R.string.no), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // no
+                    }
+                });
+        dialog.show();
+    }
+
+    private void deleteScheme(String schemeName) {
+        manager.deleteSchemeByName(schemeName);
+        reloadAllItems();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (manager.getSettings().lastState == ApplicationState.EDIT_SCHEME_CURRENT ||
+                manager.getSettings().lastState == ApplicationState.EDIT_SCHEME_NEW) {
+            manager.reloadAllSchemes();
+            reloadAllItems();
+        }
     }
 }

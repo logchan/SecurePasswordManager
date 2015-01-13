@@ -46,4 +46,12 @@
         <item name="android:textSize">20sp</item>
         <item name="android:paddingBottom">15dp</item>
     </style>
+
+    <style name="DialogEditText" parent="AllControlTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+    </style>
 </resources>

@@ -9,8 +9,14 @@
     <string name="action_about">About</string>
 
     <!-- Common -->
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ok">OK</string>
     <string name="go_back">Back</string>
     <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="exception_exit">Something went wrong...</string>
 
     <!-- Init -->
     <string name="info_init">Loading…</string>
@@ -31,6 +37,8 @@
     <string name="edit_Scheme">Edit Scheme</string>
     <string name="description">Description</string>
     <string name="new_scheme">New Scheme</string>
+    <string name="edit_this_scheme">Edit this scheme</string>
+    <string name="delete_this_scheme">Delete this scheme</string>
 
     <!-- Info Input Page -->
     <string name="title_activity_information_input">Fill information</string>
@@ -48,6 +56,13 @@
     <string name="title_activity_scheme_edit">Edit Scheme</string>
     <string name="subtitle_activity_scheme_edit">Tap the items to make changes</string>
     <string name="add_field">Add field</string>
+    <string name="edit_field">Edit field</string>
+    <string name="field_name">Field Name</string>
+    <string name="field_description">Field Description</string>
+    <string name="ask_save">Save changes?</string>
+    <string name="scheme_name">Scheme Name</string>
+    <string name="scheme_description">Scheme Description</string>
+    <string name="md5_is_the_only_one">Sorry, this is the only option for now.</string>
 
     <!-- Saved Info Page -->
     <string name="title_activity_list_saved_info">Saved Infomation</string>

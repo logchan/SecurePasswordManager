@@ -60,6 +60,10 @@
     <string name="info_save_failed">Error occurred.</string>
     <string name="info_load_success">Information loaded.</string>
     <string name="info_load_failed">Error occurred.</string>
+    <string name="how_many_times_to_hash">How many times to hash (1–100):</string>
+    <string name="length_of_result">The length of result (1–32):</string>
+    <string name="hashing_status_text">Hashed %1 times</string>
+    <string name="prompt_secret">Secret:</string>
 
     <!-- Result Page -->
     <string name="title_activity_hashing_result">Hashing Result</string>
@@ -84,4 +88,5 @@
     <!-- Saved Info Page -->
     <string name="title_activity_list_saved_info">Saved Infomation</string>
     <string name="subtitle_activity_list_saved_info">Scheme:\nTap to view, hold to delete</string>
+
 </resources>

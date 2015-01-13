@@ -73,7 +73,8 @@ public final class AndroidUtility {
     }
 
     public static void promptForOneInput(Activity activity, String title, final String original, String hint,
-                                           final PromptOneInputReceiver receiver, final Object...extraInfo) {
+                                           final PromptOneInputReceiver receiver, final boolean callOnCancel,
+                                           final Object...extraInfo) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
         if (title != null) {
@@ -103,7 +104,9 @@ public final class AndroidUtility {
         builder.setNegativeButton(activity.getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                receiver.receivePromptOneInput(original, extraInfo);
+                if (callOnCancel) {
+                    receiver.receivePromptOneInput(original, extraInfo);
+                }
             }
         });
 

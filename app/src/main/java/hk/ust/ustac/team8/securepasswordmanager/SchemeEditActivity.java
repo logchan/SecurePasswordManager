@@ -243,11 +243,11 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
         switch (position) {
             case 0:
                 AndroidUtility.promptForOneInput(this, getString(R.string.scheme_name),
-                        scheme.getName(), getString(R.string.scheme_name), this, "name");
+                        scheme.getName(), getString(R.string.scheme_name), this, true, "name");
                 break;
             case 1:
                 AndroidUtility.promptForOneInput(this, getString(R.string.scheme_description),
-                        scheme.getDescription(), getString(R.string.scheme_description), this, "description");
+                        scheme.getDescription(), getString(R.string.scheme_description), this, true, "description");
                 break;
             case 2:
                 Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.md5_is_the_only_one), Toast.LENGTH_SHORT);

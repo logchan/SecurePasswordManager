@@ -28,30 +28,74 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_alignParentBottom="true"
             android:id="@+id/infoFillBottomLinear"
             >
 
-            <Button
-                style="@style/ButtonTheme.Filled"
-                android:text="@string/load_saved_info"
-                android:id="@+id/infoFillLoadBtn"
-                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <Button
-                style="@style/ButtonTheme.Filled"
-                android:text="@string/save_info"
-                android:id="@+id/infoFillSaveBtn"
-                />
+                <TextView
+                    style="@style/TextViewTheme"
+                    android:text="@string/how_many_times_to_hash"
+                    />
 
-            <Button
-                style="@style/ButtonTheme.Filled"
-                android:paddingLeft="1dp"
-                android:paddingRight="1dp"
-                android:text="@string/proceed"
-                android:id="@+id/infoFillProceedBtn"
-                />
+                <EditText
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="10"
+                    android:maxLines="1"
+                    android:id="@+id/infoFillTimeToHash"
+                    />
+
+                </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextViewTheme"
+                    android:text="@string/length_of_result"
+                    />
+
+                <EditText
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:text="16"
+                    android:id="@+id/infoFillLengthOfResult"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                    <Button
+                        style="@style/ButtonTheme.Filled"
+                        android:text="@string/load_saved_info"
+                        android:id="@+id/infoFillLoadBtn"
+                        />
+
+                    <Button
+                        style="@style/ButtonTheme.Filled"
+                        android:text="@string/save_info"
+                        android:id="@+id/infoFillSaveBtn"
+                        />
+
+                    <Button
+                        style="@style/ButtonTheme.Filled"
+                        android:paddingLeft="1dp"
+                        android:paddingRight="1dp"
+                        android:text="@string/proceed"
+                        android:id="@+id/infoFillProceedBtn"
+                        />
+                </LinearLayout>
 
         </LinearLayout>
 

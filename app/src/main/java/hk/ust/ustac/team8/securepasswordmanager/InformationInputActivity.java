@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -51,6 +52,10 @@ public class InformationInputActivity extends Activity implements Button.OnClick
 
     private Button saveBtn;
 
+    private EditText timeToHashED;
+
+    private EditText resultLenED;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,8 @@ public class InformationInputActivity extends Activity implements Button.OnClick
         procBtn = (Button) findViewById(R.id.infoFillProceedBtn);
         loadBtn = (Button) findViewById(R.id.infoFillLoadBtn);
         saveBtn = (Button) findViewById(R.id.infoFillSaveBtn);
+        timeToHashED = (EditText) findViewById(R.id.infoFillTimeToHash);
+        resultLenED = (EditText) findViewById(R.id.infoFillLengthOfResult);
 
         // set listener
         listView.setOnItemClickListener(this);
@@ -153,7 +160,7 @@ public class InformationInputActivity extends Activity implements Button.OnClick
                 break;
             case R.id.infoFillSaveBtn:
                 AndroidUtility.promptForOneInput(this, getString(R.string.info_save_name), lastLoadedInfo,
-                        getString(R.string.info_save_hint), this, "save");
+                        getString(R.string.info_save_hint), this, false, "save");
                 break;
             case R.id.infoFillProceedBtn:
                 doProceed();
@@ -167,7 +174,7 @@ public class InformationInputActivity extends Activity implements Button.OnClick
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         HashingSchemeField field = scheme.getField(position);
         AndroidUtility.promptForOneInput(this, field.getName(), field.getValue(), getString(R.string.field_hint),
-                this, "field", position);
+                this, true, "field", position);
     }
 
     @Override
@@ -266,13 +273,39 @@ public class InformationInputActivity extends Activity implements Button.OnClick
     }
 
     private void doProceed() {
-        //TODO: read iterations
-        final int iterations = 1;
+        int timeToHash = 1;
+
+        try {
+            timeToHash = Integer.valueOf(timeToHashED.getText().toString());
+            if (timeToHash <= 0 || timeToHash > 100) {
+                throw new Exception();
+            }
+        }
+        catch (Exception e) {
+            timeToHash = 1;
+        }
+
+        int resultLen = 16;
+
+        try {
+            resultLen = Integer.valueOf(resultLenED.getText().toString());
+            if (resultLen < 0 || resultLen > 32) {
+                throw new Exception();
+            }
+        }
+        catch (Exception e) {
+            resultLen = 16;
+        }
+
+        final int iterations = timeToHash;
+        final int maxResultLen = resultLen;
 
         // prompt for password
         final Activity activity = this;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(getString(R.string.prompt_secret));
 
         final View view = getLayoutInflater().inflate(R.layout.dialog_one_input, null);
         final EditText edit = (EditText)view.findViewById(R.id.dialogInput);
@@ -287,7 +320,18 @@ public class InformationInputActivity extends Activity implements Button.OnClick
                 HashingSchemeProcessor processor = manager.getSchemeProcessor();
                 try {
                     HashingPasswordGenerator generator = processor.getHashingPasswordGeneratorFromScheme(scheme);
-                    manager.getSettings().lastHashingResult = generator.generatePassword(edit.getText().toString(), iterations);
+                    String result = generator.generatePassword(edit.getText().toString(), iterations);
+
+                    if (result.length() > maxResultLen) {
+                        result = result.substring(0, maxResultLen);
+                    }
+
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            getString(R.string.hashing_status_text).replace("%1", ((Integer)iterations).toString()),
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+
+                    manager.getSettings().lastHashingResult = result;
                     manager.switchActivity(activity, HashingResultActivity.class, ApplicationState.SHOW_HASHING_RESULT);
                 }
                 catch (Exception e) {

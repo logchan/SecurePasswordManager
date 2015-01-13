@@ -10,13 +10,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.TypedValue;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 
 public class HashingResultActivity extends Activity implements SeekBar.OnSeekBarChangeListener, Button.OnClickListener {
 
@@ -87,29 +84,6 @@ public class HashingResultActivity extends Activity implements SeekBar.OnSeekBar
         resultSizeSeek.setProgress(manager.getSettings().resultFontsize);
         hashingResultText.setTextSize(TypedValue.COMPLEX_UNIT_SP, manager.getSettings().resultFontsize);
         setHashingResultText(manager.getSettings().lastHashingResult);
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_hashing_result, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

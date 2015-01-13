@@ -48,6 +48,7 @@ public class SchemeListActivity extends Activity implements Button.OnClickListen
 
         // set listeners
         listView.setOnItemClickListener(this);
+        listView.setOnItemLongClickListener(this);
         backBtn.setOnClickListener(this);
         newBtn.setOnClickListener(this);
 

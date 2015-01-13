@@ -37,9 +37,10 @@
     <string name="hashing_result_change_fontsize">Change text size</string>
     <string name="copy_hashing_result">Copy Result</string>
 
-
-    <string name="field_name">field</string>
     <string name="new_scheme">New Scheme</string>
     <string name="subtitle_activity_scheme_list">Tap and hold for more options</string>
+    <string name="subtitle_activity_information_input">Tap on each field to fill</string>
+    <string name="load_saved_info">Load Saved</string>
+    <string name="proceed">Proceed</string>
 
 </resources>

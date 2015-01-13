@@ -41,8 +41,6 @@ public class InformationInputActivity extends Activity implements Button.OnClick
 
     private ListView listView;
 
-    private Button backBtn;
-
     private Button procBtn;
 
     private Button loadBtn;
@@ -58,14 +56,12 @@ public class InformationInputActivity extends Activity implements Button.OnClick
 
         // set reference
         listView = (ListView) findViewById(R.id.infoFillList);
-        backBtn = (Button) findViewById(R.id.infoFillBackBtn);
         procBtn = (Button) findViewById(R.id.infoFillProceedBtn);
         loadBtn = (Button) findViewById(R.id.infoFillLoadBtn);
 
         // set listener
         listView.setOnItemClickListener(this);
         listView.setOnItemLongClickListener(this);
-        backBtn.setOnClickListener(this);
         procBtn.setOnClickListener(this);
         loadBtn.setOnClickListener(this);
 
@@ -88,9 +84,6 @@ public class InformationInputActivity extends Activity implements Button.OnClick
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.infoFillBackBtn:
-                //TODO: implement back
-                break;
             case R.id.infoFillLoadBtn:
                 //TODO: implement load
                 break;

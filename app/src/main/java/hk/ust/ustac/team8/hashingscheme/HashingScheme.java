@@ -110,7 +110,7 @@ public class HashingScheme {
             throw new IndexOutOfBoundsException("Removing invalid field " + index.toString());
         }
 
-        fields.remove(index);
+        fields.remove((int) index);
     }
 
     /**

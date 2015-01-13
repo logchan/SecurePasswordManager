@@ -16,7 +16,11 @@
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
     <string name="are_you_sure">Are you sure?</string>
-    <string name="exception_exit">Something went wrong...</string>
+    <string name="exception_exit">Something went wrong…</string>
+
+    <!-- Transform -->
+    <string name="trans_no_transform">No transform</string>
+    <string name="trans_to_mixed">Mix-cased</string>
 
     <!-- Init -->
     <string name="info_init">Loading…</string>
@@ -62,6 +66,7 @@
     <string name="ask_save">Save changes?</string>
     <string name="scheme_name">Scheme Name</string>
     <string name="scheme_description">Scheme Description</string>
+    <string name="scheme_transform">Transform</string>
     <string name="md5_is_the_only_one">Sorry, this is the only option for now.</string>
 
     <!-- Saved Info Page -->

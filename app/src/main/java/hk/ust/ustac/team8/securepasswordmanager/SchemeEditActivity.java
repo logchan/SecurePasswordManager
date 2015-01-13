@@ -1,5 +1,6 @@
 package hk.ust.ustac.team8.securepasswordmanager;
 
+import hk.ust.ustac.team8.applicationutility.AppUtility;
 import hk.ust.ustac.team8.generalutility.AndroidUtility;
 import hk.ust.ustac.team8.hashingscheme.HashingScheme;
 import hk.ust.ustac.team8.hashingscheme.HashingSchemeCrypto;
@@ -126,7 +127,7 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
         putItemInTheList(scheme.getName(), "Name of the scheme");
         putItemInTheList(scheme.getDescription(), "Description of the scheme");
         putItemInTheList(scheme.getCrypto().toString(), "Hashing method of the scheme");
-        putItemInTheList(scheme.getTransform().toString(), "Transform after hashing");
+        putItemInTheList(getString(AppUtility.getTransformStringID(scheme.getTransform())), "Transform after hashing");
 
         int fieldCount = scheme.getFieldCount();
         for (int i = 0; i < fieldCount; ++i) {
@@ -249,7 +250,7 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
                 toast.show();
                 break;
             case 3:
-
+                promptTransformSelect();
                 break;
             default:
                 editHashingField(position - 4);
@@ -267,6 +268,31 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
         else {
             return false;
         }
+    }
+
+    private void promptTransformSelect() {
+        final String[] options =  new String[] { getString(R.string.trans_no_transform),
+                getString(R.string.trans_to_mixed),
+        };
+
+        final Activity activity = this;
+
+        // create a dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.scheme_transform));
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                String selected = options[which];
+                if (selected.equals(getString(R.string.trans_no_transform))) {
+                    scheme.setTransform(HashingSchemeTransform.NO_TRANSFORM);
+                }
+                else if (selected.equals(getString(R.string.trans_to_mixed))) {
+                    scheme.setTransform(HashingSchemeTransform.MIXED_UPPER_AND_LOWER_CASE);
+                }
+                initTheList();
+            }
+        });
+        builder.show();
     }
 
     private void promptDeletefield(final int index) {

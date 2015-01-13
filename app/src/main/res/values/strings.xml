@@ -10,9 +10,7 @@
 
     <!-- Page titles -->
     <string name="title_activity_scheme_edit">Edit Scheme</string>
-    <string name="title_activity_information_input">Fill information</string>
     <string name="title_activity_setting">Settings</string>
-    <string name="title_activity_hashing_result">Hashing Result</string>
 
     <!-- Common -->
     <string name="go_back">Back</string>
@@ -30,17 +28,21 @@
 
     <!-- Scheme List Page -->
     <string name="title_activity_scheme_list">Choose a scheme</string>
+    <string name="subtitle_activity_scheme_list">Tap and hold for more options</string>
     <string name="edit_Scheme">Edit Scheme</string>
     <string name="description">Description</string>
-
-    <!-- Result Page -->
-    <string name="hashing_result_change_fontsize">Change text size</string>
-    <string name="copy_hashing_result">Copy Result</string>
-
     <string name="new_scheme">New Scheme</string>
-    <string name="subtitle_activity_scheme_list">Tap and hold for more options</string>
+
+    <!-- Info Input Page -->
+    <string name="title_activity_information_input">Fill information</string>
     <string name="subtitle_activity_information_input">Tap on each field to fill</string>
     <string name="load_saved_info">Load Saved</string>
     <string name="proceed">Proceed</string>
+
+    <!-- Result Page -->
+    <string name="title_activity_hashing_result">Hashing Result</string>
+    <string name="hashing_result_change_fontsize">Change text size</string>
+    <string name="copy_hashing_result">Copy Result</string>
+    <string name="subtitle_activity_hashing_result">Don\'t let others see!</string>
 
 </resources>

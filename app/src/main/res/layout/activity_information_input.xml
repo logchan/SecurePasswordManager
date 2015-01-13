@@ -27,14 +27,6 @@
         android:layout_height="fill_parent"
         >
 
-        <ListView
-            android:id="@+id/schemeList"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_alignParentTop="true"
-            android:layout_above="@id/schemeListBackBtn"
-            />
-
         <Button
             android:text="@string/go_back"
             android:layout_width="wrap_content"
@@ -42,6 +34,14 @@
             android:id="@+id/schemeListBackBtn"
             android:layout_alignParentBottom="true"
             style="@style/ButtonTheme"
+            />
+
+        <ListView
+            android:id="@+id/schemeList"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_above="@id/schemeListBackBtn"
             />
     </RelativeLayout>
 

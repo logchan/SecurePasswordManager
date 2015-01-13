@@ -13,11 +13,18 @@
     <style name="ButtonTheme" parent="AllControlTheme">
         <item name="android:paddingLeft">30dp</item>
         <item name="android:paddingRight">30dp</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="ButtonTheme.Filled" parent="ButtonTheme">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="ButtonTheme.MainActivity" parent="ButtonTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
     </style>
 
     <style name="HashingResultTheme" parent="AllControlTheme">
@@ -33,5 +40,9 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">28sp</item>
         <item name="android:paddingBottom">20dp</item>
+    </style>
+
+    <style name="PageSubTitle" parent="PageTitle">
+        <item name="android:textSize">20sp</item>
     </style>
 </resources>

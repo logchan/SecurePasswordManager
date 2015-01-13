@@ -2,25 +2,37 @@
 <resources>
 
     <string name="app_name">SecurePasswordManager</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="welcome">    Weclome to the SecurePasswordManager!</string>
+    <string name="hello_world"></string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_main">Secure Password Manager</string>
+
+    <!-- Page titles -->
+    <string name="title_activity_main">Welcome</string>
     <string name="title_activity_scheme_list">Choose a scheme</string>
     <string name="title_activity_scheme_edit">Edit Scheme</string>
     <string name="title_activity_information_input">Fill information</string>
-    <string name="info_init">Loading...</string>
+    <string name="title_activity_setting">Settings</string>
     <string name="title_activity_hashing_result">Hashing Result</string>
-    <string name="hashing_result_change_fontsize">Change text size</string>
+
+    <!-- Common -->
     <string name="go_back">Back</string>
     <string name="done">Done</string>
-    <string name="copy_hashing_result">Copy Result</string>
-    <string name="title_activity_setting">Settings</string>
+
+    <!-- Init -->
+    <string name="info_init">Loading…</string>
+
+    <!-- Main Page -->
+    <string name="generate_password">Generate Password</string>
+    <string name="manage_saved_information">Manage Saved Information</string>
+    <string name="manage_schemes">Manage Schemes</string>
+
+    <!-- Scheme List Page -->
     <string name="edit_Scheme">Edit Scheme</string>
     <string name="description">Description</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="password_generation">Generate Password</string>
-    <string name="saved_information">Saved Inforamtion</string>
-    <string name="manage_schemes">Manage Schemes</string>
+
+    <!-- Result Page -->
+    <string name="hashing_result_change_fontsize">Change text size</string>
+    <string name="copy_hashing_result">Copy Result</string>
+
+
     <string name="field_name">field</string>
 </resources>

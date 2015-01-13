@@ -139,6 +139,15 @@ public final class ApplicationManager {
         return null;
     }
 
+    public boolean haveSchemeOfName(String name) {
+        for (HashingScheme scheme : schemes) {
+            if (scheme.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Save the scheme.
      * @param scheme the scheme to save

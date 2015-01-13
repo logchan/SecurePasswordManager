@@ -79,6 +79,7 @@
     <string name="scheme_description">Scheme Description</string>
     <string name="scheme_transform">Transform</string>
     <string name="md5_is_the_only_one">Sorry, this is the only option for now.</string>
+    <string name="scheme_name_exists">Scheme of the same name already exists.</string>
 
     <!-- Saved Info Page -->
     <string name="title_activity_list_saved_info">Saved Infomation</string>

@@ -178,21 +178,27 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
         initTheList();
     }
 
-    private void performSave() {
-        // TODO: check for duplicated scheme!
+    private void performSaveAndExit() {
         if (!scheme.getName().equals(oldName)) {
-            manager.renameScheme(oldName, scheme.getName());
+            if (manager.haveSchemeOfName(scheme.getName())) {
+                Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.scheme_name_exists), Toast.LENGTH_SHORT);
+                toast.show();
+                return;
+            }
+            else {
+                manager.renameScheme(oldName, scheme.getName());
+            }
         }
         manager.saveScheme(scheme);
+        manager.popState(null);
+        finish();
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.schemeEditDoneBtn:
-                performSave();
-                manager.popState(null);
-                finish();
+                performSaveAndExit();
                 break;
             case R.id.schemeEditAddBtn:
                 scheme.addField(new HashingSchemeField(HashingSchemeFieldType.STRING, "new field",
@@ -210,9 +216,7 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
                 null, getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        performSave();
-                        manager.popState(null);
-                        finish();
+                        performSaveAndExit();
                     }
                 }, getString(R.string.no), new DialogInterface.OnClickListener() {
                     @Override

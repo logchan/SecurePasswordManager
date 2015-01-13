@@ -22,16 +22,19 @@
     <Button
         style="@style/ButtonTheme.MainActivity"
         android:text="@string/generate_password"
+        android:id="@+id/mainGenPwdBtn"
         />
 
     <Button
         style="@style/ButtonTheme.MainActivity"
         android:text="@string/manage_schemes"
+        android:id="@+id/mainManScheBtn"
         />
 
     <Button
         style="@style/ButtonTheme.MainActivity"
         android:text="@string/manage_saved_information"
+        android:id="@+id/mainManInfoBtn"
         />
 
 </LinearLayout>

@@ -43,5 +43,6 @@ public class InitActivity extends Activity {
 
     private void gotoMain() {
         manager.switchActivity(this, MainActivity.class, ApplicationState.MAIN);
+        finish();
     }
 }

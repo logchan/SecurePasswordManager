@@ -4,13 +4,36 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements Button.OnClickListener {
+
+    private ApplicationManager manager;
+
+    private Button genPwdBtn;
+
+    private Button manScheBtn;
+
+    private Button manInfoBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // set manager
+        manager = ApplicationManager.getInstanceSafe(getApplicationContext());
+
+        // set reference
+        genPwdBtn = (Button) findViewById(R.id.mainGenPwdBtn);
+        manScheBtn = (Button) findViewById(R.id.mainManScheBtn);
+        manInfoBtn = (Button) findViewById(R.id.mainManInfoBtn);
+
+        // set listener
+        genPwdBtn.setOnClickListener(this);
+        manScheBtn.setOnClickListener(this);
+        manInfoBtn.setOnClickListener(this);
     }
 
     /*** Menu Starts ***/
@@ -36,4 +59,24 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
     /*** Menu Ends ***/
+
+    @Override
+    public void onClick(View view) {
+        ApplicationState nextState = ApplicationState.MAIN;
+
+        switch (view.getId()) {
+            case R.id.mainGenPwdBtn:
+                nextState = ApplicationState.SELECT_SCHEME_FOR_PASSWORD_GEN;
+                break;
+            case R.id.mainManScheBtn:
+                nextState = ApplicationState.SELECT_SCHEME_FOR_EDIT;
+                break;
+            case R.id.mainManInfoBtn:
+                nextState = ApplicationState.SELECT_SCHEME_FOR_LIST_INFO;
+                break;
+        }
+
+        manager.switchActivity(this, SchemeListActivity.class, nextState);
+    }
+
 }

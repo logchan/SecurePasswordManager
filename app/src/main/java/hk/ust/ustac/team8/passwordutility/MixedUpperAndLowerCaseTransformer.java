@@ -2,11 +2,11 @@ package hk.ust.ustac.team8.passwordutility;
 
 /**
  * A string transform service provider that mix the case of the input.
- * The 1st, 3rd, 5th,... letters are lower-cased,
- * and the 2nd, 4th, 6th,... letters are upper-cased.
+ * The 1st, 3rd, 5th,... letters are upper-cased,
+ * and the 2nd, 4th, 6th,... letters are lower-cased.
  * For example,
- * abdef   will become aBdEf,
- * ab5de1f will become aB5dE1f. Note that the inserted numbers do not affect the result.
+ * abdef   will become AbDeF,
+ * ab5de1f will become Ab4De1F. Note that the inserted numbers do not affect the result.
  *
  * @author logchan
  * @see hk.ust.ustac.team8.passwordutility.StringTransformServiceProvider
@@ -25,11 +25,11 @@ public class MixedUpperAndLowerCaseTransformer implements StringTransformService
         String result = "";
         input = input.toLowerCase();
 
-        boolean isUpper = false;
+        boolean isUpper = true;
         for (int i = 0; i < input.length(); ++i) {
             char c = input.charAt(i);
             if ('a' <= c && 'z' >= c) {
-                result += isUpper ? c + ('A' - 'a') : c;
+                result += (char)(isUpper ? c + ('A' - 'a') : c);
                 isUpper = !isUpper;
             }
             else {

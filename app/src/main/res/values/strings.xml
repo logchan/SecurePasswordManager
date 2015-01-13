@@ -39,5 +39,7 @@
 
 
     <string name="field_name">field</string>
+    <string name="new_scheme">New Scheme</string>
+    <string name="subtitle_activity_scheme_list">Tap and hold for more options</string>
 
 </resources>

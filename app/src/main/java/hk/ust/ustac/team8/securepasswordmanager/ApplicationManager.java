@@ -61,6 +61,24 @@ public final class ApplicationManager {
     }
 
     /**
+     * Get the instance of this class. If the class has not been set up, it will be.
+     *
+     * @param context the application context
+     * @return the instance
+     */
+    public static ApplicationManager getInstanceSafe(Context context) {
+        if (instance == null) {
+            try {
+                setUp(context);
+            }
+            catch (InstantiationException e) {
+                // this is unlikely to happen
+            }
+        }
+        return instance;
+    }
+
+    /**
      * Load all the schemes
      */
     public void reloadAllSchemes() {

@@ -51,6 +51,15 @@
     <string name="load_saved_info">Load</string>
     <string name="proceed">Proceed</string>
     <string name="field_hint">Fill value</string>
+    <string name="ask_overwrite">Overwrite?</string>
+    <string name="same_info_exists">Saved information of the same name already exists.</string>
+    <string name="info_load_title">Choose an saved entry</string>
+    <string name="info_save_name">Name of information</string>
+    <string name="info_save_hint">MyAccount</string>
+    <string name="info_save_success">Information saved.</string>
+    <string name="info_save_failed">Error occurred.</string>
+    <string name="info_load_success">Information loaded.</string>
+    <string name="info_load_failed">Error occurred.</string>
 
     <!-- Result Page -->
     <string name="title_activity_hashing_result">Hashing Result</string>

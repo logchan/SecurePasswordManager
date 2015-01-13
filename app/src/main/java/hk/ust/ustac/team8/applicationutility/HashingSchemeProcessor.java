@@ -43,7 +43,7 @@ public class HashingSchemeProcessor {
         transformHashMap = new HashMap<HashingSchemeTransform, StringTransformServiceProvider>();
     }
 
-    public HashingSchemeProcessor getInstance() {
+    public static HashingSchemeProcessor getInstance() {
         if (instance == null) {
             instance = new HashingSchemeProcessor();
         }

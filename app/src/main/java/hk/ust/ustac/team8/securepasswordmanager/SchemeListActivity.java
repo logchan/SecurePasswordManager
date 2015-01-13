@@ -171,5 +171,7 @@ public class SchemeListActivity extends Activity implements Button.OnClickListen
             manager.reloadAllSchemes();
             reloadAllItems();
         }
+
+        Log.i("spm", manager.getSettings().currentState.toString());
     }
 }

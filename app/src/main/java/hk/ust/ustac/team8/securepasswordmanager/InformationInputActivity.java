@@ -4,22 +4,29 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
+import hk.ust.ustac.team8.applicationutility.AppFileUtility;
+import hk.ust.ustac.team8.applicationutility.HashingSchemeProcessor;
 import hk.ust.ustac.team8.generalutility.AndroidUtility;
 import hk.ust.ustac.team8.hashingscheme.HashingScheme;
 import hk.ust.ustac.team8.hashingscheme.HashingSchemeCrypto;
 import hk.ust.ustac.team8.hashingscheme.HashingSchemeField;
 import hk.ust.ustac.team8.hashingscheme.HashingSchemeFieldType;
 import hk.ust.ustac.team8.hashingscheme.HashingSchemeTransform;
+import hk.ust.ustac.team8.passwordutility.HashingPasswordGenerator;
 
 public class InformationInputActivity extends Activity implements Button.OnClickListener,
         AdapterView.OnItemClickListener, AndroidUtility.PromptOneInputReceiver {
@@ -33,6 +40,10 @@ public class InformationInputActivity extends Activity implements Button.OnClick
     private ArrayList<HashMap<String,String>> fieldList = new ArrayList<HashMap<String,String>>();
 
     private ListView listView;
+
+    private LinkedList<String> savedInfos;
+
+    private String lastLoadedInfo = "";
 
     private Button procBtn;
 
@@ -62,7 +73,17 @@ public class InformationInputActivity extends Activity implements Button.OnClick
         saveBtn.setOnClickListener(this);
 
         // get fields
-        setSchemeByState();
+        if (manager.getSettings().lastState == ApplicationState.SHOW_HASHING_RESULT) {
+            scheme = manager.getSettings().currentScheme;
+        }
+        else {
+            setSchemeByState();
+        }
+
+        savedInfos = manager.getAllSavedInfo(scheme.getName());
+        if (savedInfos == null) {
+            savedInfos = new LinkedList<String>();
+        }
 
         initListView(false);
     }
@@ -117,10 +138,10 @@ public class InformationInputActivity extends Activity implements Button.OnClick
         listView.setAdapter(adapter);
     }
 
-
     @Override
     public void onBackPressed() {
-        manager.popState(null);
+        manager.getSettings().currentState = ApplicationState.SELECT_SCHEME_FOR_PASSWORD_GEN;
+        manager.getSettings().lastState = ApplicationState.INPUT_INFO_FOR_PASSWORD_GEN;
         finish();
     }
 
@@ -128,13 +149,14 @@ public class InformationInputActivity extends Activity implements Button.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.infoFillLoadBtn:
-                //TODO: implement load
+                promptLoadInfo();
                 break;
             case R.id.infoFillSaveBtn:
-                //TODO: implement save
+                AndroidUtility.promptForOneInput(this, getString(R.string.info_save_name), lastLoadedInfo,
+                        getString(R.string.info_save_hint), this, "save");
                 break;
             case R.id.infoFillProceedBtn:
-                //TODO: implement proceed
+                doProceed();
                 break;
             default:
                 break;
@@ -145,7 +167,7 @@ public class InformationInputActivity extends Activity implements Button.OnClick
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         HashingSchemeField field = scheme.getField(position);
         AndroidUtility.promptForOneInput(this, field.getName(), field.getValue(), getString(R.string.field_hint),
-                this, position);
+                this, "field", position);
     }
 
     @Override
@@ -155,13 +177,133 @@ public class InformationInputActivity extends Activity implements Button.OnClick
         }
 
         Object obj = extraInfo[0];
-        if (obj.getClass() != int.class && obj.getClass() != Integer.class) {
+        if (obj.getClass() != String.class) {
             return;
         }
 
-        int index = (Integer) obj;
-        HashingSchemeField field = scheme.getField(index);
-        field.setValue(output);
+        String action = (String) obj;
+
+        if (action.equals("field") && extraInfo.length > 1) {
+            obj = extraInfo[1];
+            if (obj.getClass() != int.class && obj.getClass() != Integer.class) {
+                return;
+            }
+
+            int index = (Integer) obj;
+            HashingSchemeField field = scheme.getField(index);
+            field.setValue(output);
+            initListView(true);
+        }
+        else if (action.equals("save")) {
+
+            final String infoName = output;
+            if (savedInfos.contains(infoName)) {
+                // ask if overwrite
+                AlertDialog dialog = AndroidUtility.createSimpleAlertDialog(this, getString(R.string.ask_overwrite),
+                        getString(R.string.same_info_exists), getString(R.string.yes), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                saveInfo(infoName);
+                            }
+                        }, getString(R.string.no), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // do nothing
+                            }
+                        });
+                dialog.show();
+            }
+            else {
+                saveInfo(infoName);
+            }
+        }
+    }
+
+    private void saveInfo(String infoName) {
+        String result = "";
+        if (manager.saveOneInfo(scheme, infoName)) {
+            result = getString(R.string.info_save_success);
+        }
+        else {
+            result = getString(R.string.info_save_failed);
+        }
+        Toast toast = Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT);
+        toast.show();
+        savedInfos = manager.getAllSavedInfo(scheme.getName());
+    }
+
+    private void promptLoadInfo() {
+        // final String[] options = (String[])savedInfos.toArray(); //WRONG!
+        final String[] options = savedInfos.toArray(new String[savedInfos.size()]);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.info_load_title));
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                String selected = options[which];
+                loadInfo(selected);
+            }
+        });
+        builder.show();
+    }
+
+    private void loadInfo(String infoName) {
+        String savedInfo = manager.getOneSavedInfo(scheme.getName(), infoName);
+        String result = "";
+
+        if (savedInfo != null) {
+            scheme.importFieldValues(savedInfo);
+            result = getString(R.string.info_load_success);
+        }
+        else {
+            result = getString(R.string.info_load_failed);
+        }
+
+        Toast toast = Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT);
+        toast.show();
+
         initListView(true);
+    }
+
+    private void doProceed() {
+        //TODO: read iterations
+        final int iterations = 1;
+
+        // prompt for password
+        final Activity activity = this;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        final View view = getLayoutInflater().inflate(R.layout.dialog_one_input, null);
+        final EditText edit = (EditText)view.findViewById(R.id.dialogInput);
+
+        edit.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+        builder.setView(view);
+
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                HashingSchemeProcessor processor = manager.getSchemeProcessor();
+                try {
+                    HashingPasswordGenerator generator = processor.getHashingPasswordGeneratorFromScheme(scheme);
+                    manager.getSettings().lastHashingResult = generator.generatePassword(edit.getText().toString(), iterations);
+                    manager.switchActivity(activity, HashingResultActivity.class, ApplicationState.SHOW_HASHING_RESULT);
+                }
+                catch (Exception e) {
+                    Toast toast = Toast.makeText(getApplicationContext(), activity.getString(R.string.exception_exit), Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+        });
+
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // do nothing
+            }
+        });
+
+        builder.show();
     }
 }

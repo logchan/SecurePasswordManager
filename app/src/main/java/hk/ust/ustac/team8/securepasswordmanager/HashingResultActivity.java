@@ -64,9 +64,6 @@ public class HashingResultActivity extends Activity implements SeekBar.OnSeekBar
         }
         manager = ApplicationManager.getInstance();
 
-        //TODO: remove debug code
-        manager.getSettings().lastHashingResult = "D41D8CD98F00B204";
-
         // setup reference to views
         hashingResultText = (TextView) findViewById(R.id.hashingResultTextView);
         resultSizeSeek = (SeekBar) findViewById(R.id.hashingResultSizeSeek);
@@ -84,6 +81,12 @@ public class HashingResultActivity extends Activity implements SeekBar.OnSeekBar
         resultSizeSeek.setProgress(manager.getSettings().resultFontsize);
         hashingResultText.setTextSize(TypedValue.COMPLEX_UNIT_SP, manager.getSettings().resultFontsize);
         setHashingResultText(manager.getSettings().lastHashingResult);
+    }
+
+    @Override
+    public void onBackPressed() {
+        manager.popState(ApplicationState.SHOW_HASHING_RESULT);
+        finish();
     }
 
     @Override
@@ -112,10 +115,13 @@ public class HashingResultActivity extends Activity implements SeekBar.OnSeekBar
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.hashingResultBackBtn:
-                //TODO: implement back
+                onBackPressed();
                 break;
             case R.id.hashingResultDoneBtn:
-                //TODO: implement done
+                manager.getSettings().currentScheme = null;
+                manager.getSettings().lastHashingResult = "";
+                manager.switchActivity(this, MainActivity.class, ApplicationState.MAIN);
+                finish();
                 break;
             case R.id.hashingResultCopyBtn:
                 ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);

@@ -9,8 +9,43 @@
                 tools:context="hk.ust.ustac.team8.securepasswordmanager.MainActivity">
 
     <TextView
-        android:text="@string/hello_world"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/welcome"
+
+        android:layout_marginTop="34dp"
+        android:id="@+id/textView"
+        android:gravity="center_horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="@string/view_Scheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:gravity="left"
+        android:layout_marginLeft="100dp"
+        android:id="@+id/button" />
+
+    <TextView
+        android:text="Your current Passwords"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:id="@+id/textView2"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/button"
+        android:layout_alignParentEnd="true" />
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/textView2" />
+
 
 </RelativeLayout>

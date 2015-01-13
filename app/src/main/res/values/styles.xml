@@ -38,7 +38,7 @@
     <style name="PageTitle" parent="AllControlTheme">
         <item name="android:layout_width">match_parent</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">28sp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:paddingBottom">10dp</item>
     </style>
 

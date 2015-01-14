@@ -92,8 +92,7 @@ public final class ApplicationManager {
         if (instance == null) {
             try {
                 setUp(context);
-            }
-            catch (InstantiationException e) {
+            } catch (InstantiationException e) {
                 // this is unlikely to happen
             }
         }
@@ -127,6 +126,7 @@ public final class ApplicationManager {
 
     /**
      * Get the scheme specified by the name.
+     *
      * @param name the name of scheme
      * @return the scheme, null if not found
      */
@@ -150,6 +150,7 @@ public final class ApplicationManager {
 
     /**
      * Save the scheme.
+     *
      * @param scheme the scheme to save
      * @return true if saved successfully, false otherwise
      */
@@ -157,8 +158,7 @@ public final class ApplicationManager {
         if (AppFileUtility.saveScheme(context, scheme)) {
             reloadAllSchemes();
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -168,14 +168,14 @@ public final class ApplicationManager {
         try {
             fileSuccess = AppFileUtility.renameSchemeFile(context, oldName, newName);
             return fileSuccess;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
 
     /**
      * Delete the scheme specified by the name, then reload all schemes
+     *
      * @param name the name of scheme to be deleted
      * @return true if successfully deleted, false otherwise
      */
@@ -185,16 +185,14 @@ public final class ApplicationManager {
         // try to delete scheme files
         try {
             fileDeleteSuccess = AppFileUtility.deleteScheme(context, name);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
 
         if (fileDeleteSuccess) {
             reloadAllSchemes();
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -226,11 +224,11 @@ public final class ApplicationManager {
     }
 
     public void switchActivity(Activity currentActivity, Class nextActivity,
-                               ApplicationState newState, Object ... carriedInfo) {
+                               ApplicationState newState, Object... carriedInfo) {
 
         settings.lastState = settings.currentState;
         settings.currentState = newState;
-        settings.carriedInfo = carriedInfo == null ? new Object[] { } : carriedInfo;
+        settings.carriedInfo = carriedInfo == null ? new Object[]{} : carriedInfo;
 
         Intent intent = new Intent(currentActivity, nextActivity);
         currentActivity.startActivity(intent);
@@ -239,8 +237,7 @@ public final class ApplicationManager {
     public LinkedList<String> getAllSavedInfo(String schemeName) {
         try {
             return AppFileUtility.getAllSavedInfoOfScheme(context, schemeName);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -248,8 +245,7 @@ public final class ApplicationManager {
     public String getOneSavedInfo(String schemeName, String infoName) {
         try {
             return AppFileUtility.getOneSavedInfoOfScheme(context, schemeName, infoName);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -257,13 +253,21 @@ public final class ApplicationManager {
     public boolean saveOneInfo(HashingScheme scheme, String infoName) {
         try {
             return AppFileUtility.saveInfoOfScheme(context, scheme, infoName);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
 
     public HashingSchemeProcessor getSchemeProcessor() {
         return schemeProcessor;
+    }
+
+    public boolean deleteschemeInfo(String schemeName, String infoName) {
+        boolean fileDeleteSuccess = false;
+        try {
+            return fileDeleteSuccess = AppFileUtility.deleteInfoOfScheme(context, getSchemeByName(schemeName), infoName);
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

@@ -3,8 +3,11 @@ package hk.ust.ustac.team8.securepasswordmanager;
 import hk.ust.ustac.team8.applicationutility.AppFileUtility;
 import hk.ust.ustac.team8.generalutility.AndroidUtility;
 import hk.ust.ustac.team8.hashingscheme.HashingScheme;
+import hk.ust.ustac.team8.hashingscheme.HashingSchemeField;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -122,7 +125,40 @@ public class ListSavedInfoActivity extends Activity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        // display the saved information when item clicked
         HashMap<String, String> item = (HashMap<String, String>) adapter.getItem(position);
+        String infoName = item.get("name");
+        String infoContent = manager.getOneSavedInfo(scheme.getName(), infoName);
+        // check if the information is get successfully
+        if (infoContent != null) {
+            // import the content
+            scheme.importFieldValues(infoContent);
+            // construct the displayed text
+            StringBuilder contentBuilder = new StringBuilder();
+
+            int fieldCount = scheme.getFieldCount();
+            for (int i = 0; i < fieldCount; ++i) {
+                HashingSchemeField field = scheme.getField(i);
+                contentBuilder.append(field.getName());
+                contentBuilder.append(": ");
+                contentBuilder.append(field.getValue());
+                contentBuilder.append('\n');
+            }
+            // show the text
+            AlertDialog dialog = AndroidUtility.createSimpleAlertDialog(this, infoName, contentBuilder.toString(),
+                    getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // do nothing
+                        }
+                    }, null, null);
+            dialog.show();
+        }
+        else {
+            Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.failed_loading_that_info),
+                    Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     @Override

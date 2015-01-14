@@ -16,6 +16,12 @@
         <item name="android:layout_marginRight">5dp</item>
     </style>
 
+    <style name="TextViewTheme.SettingsTitle" parent="TextViewTheme">
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
+    </style>
+
     <style name="ButtonTheme" parent="AllControlTheme">
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>

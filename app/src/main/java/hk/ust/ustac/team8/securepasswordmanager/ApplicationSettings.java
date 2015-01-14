@@ -11,7 +11,8 @@ import android.util.Log;
  *  */
 public class ApplicationSettings {
 
-    private static final String[] EXPORT_FIELDS = { "hideResult", "resultFontsize" };
+    private static final String[] EXPORT_FIELDS = { "hideResult", "resultFontsize", "defaultHashingTimes",
+                                                    "defaultResultLength" };
 
     public String lastHashingResult = "";
 
@@ -23,10 +24,15 @@ public class ApplicationSettings {
 
     public Object[] carriedInfo = {};
 
+    /*** settings to be saved/loaded ***/
+
     public boolean hideResult = false;
 
     public int resultFontsize = 22;
 
+    public int defaultHashingTimes = 10;
+
+    public int defaultResultLength = 16;
 
     public ApplicationSettings()
     {

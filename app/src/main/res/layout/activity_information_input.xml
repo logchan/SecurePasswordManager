@@ -46,8 +46,9 @@
                 <EditText
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:text="10"
+                    android:inputType="number"
                     android:maxLines="1"
+                    android:text="10"
                     android:id="@+id/infoFillTimeToHash"
                     />
 
@@ -66,6 +67,8 @@
                 <EditText
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLines="1"
                     android:text="16"
                     android:id="@+id/infoFillLengthOfResult"
                     />

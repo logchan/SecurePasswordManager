@@ -200,19 +200,22 @@ public final class ApplicationManager {
     /**
      * Load the application settings from file
      */
-    public void loadAppSettings() {
+    public boolean loadAppSettings() {
+        boolean loadingResult = true;
         settings = AppFileUtility.loadAppSettings(context);
         if (settings == null) {
+            loadingResult = false;
             settings = new ApplicationSettings();
-            AppFileUtility.saveAppSettings(context, settings);
         }
+        AppFileUtility.saveAppSettings(context, settings);
+        return loadingResult;
     }
 
     /**
      * Save the current application settings to file
      */
-    public void saveAppSettings() {
-        AppFileUtility.saveAppSettings(context, settings);
+    public boolean saveAppSettings() {
+        return AppFileUtility.saveAppSettings(context, settings);
     }
 
     public void popState(ApplicationState last) {

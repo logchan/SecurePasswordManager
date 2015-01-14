@@ -45,6 +45,15 @@
 
     <!-- Setting page -->
     <string name="title_activity_setting">Settings</string>
+    <string name="hide_result_by_default">Hide result by default</string>
+    <string name="result_size_default">Result text size:</string>
+    <string name="result_length_default">Result length (1–32):</string>
+    <string name="hash_time_default">Times to hash (1–100):</string>
+    <string name="ask_save_settings">Save settings?</string>
+    <string name="hash_time_invalid">Time to hash is not valid.</string>
+    <string name="result_length_invalid">Result length is not valid.</string>
+    <string name="save_setting_succeed">Settings saved.</string>
+    <string name="save_setting_fail">Error occurred, settings not saved.</string>
 
     <!-- Scheme List Page -->
     <string name="title_activity_scheme_list">Choose a scheme</string>

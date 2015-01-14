@@ -10,7 +10,80 @@
                 tools:context="hk.ust.ustac.team8.securepasswordmanager.SettingActivity">
 
     <TextView
+        style="@style/PageTitle"
         android:text="@string/title_activity_setting"
-        style="@style/PageTitle"/>
+        />
 
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextViewTheme.SettingsTitle"
+        android:layout_marginLeft="0dp"
+        android:text="@string/hide_result_by_default"
+        android:id="@+id/settingHideResultCheck"
+        />
+
+    <TextView
+        style="@style/TextViewTheme.SettingsTitle"
+        android:text="@string/result_size_default"
+        />
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
+        android:max="50"
+        android:progress="22"
+        android:id="@+id/settingSizeSeek"
+        />
+
+    <TextView
+        style="@style/TextViewTheme"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:textSize="22sp"
+        android:text="F0E68 01F0"
+        android:id="@+id/settingSizePreviewText"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TextViewTheme.SettingsTitle"
+            android:text="@string/result_length_default"
+            />
+
+        <EditText
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLines="1"
+            android:text="16"
+            android:id="@+id/settingResultLength"
+            />
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TextViewTheme.SettingsTitle"
+            android:text="@string/hash_time_default"
+            />
+
+        <EditText
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLines="1"
+            android:text="10"
+            android:id="@+id/settingTimesToHash"
+            />
+    </LinearLayout>
 </LinearLayout>

@@ -87,6 +87,6 @@
 
     <!-- Saved Info Page -->
     <string name="title_activity_list_saved_info">Saved Infomation</string>
-    <string name="subtitle_activity_list_saved_info">Scheme:\nTap to view, hold to delete</string>
-
+    <string name="subtitle_activity_list_saved_info">Scheme:%1\nTap to view, hold to delete</string>
+    <string name="failed_loading_infolist">Error occurred while loading all saved information</string>
 </resources>

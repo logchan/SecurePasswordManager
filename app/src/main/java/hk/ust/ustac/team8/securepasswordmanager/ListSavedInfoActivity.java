@@ -1,6 +1,7 @@
 package hk.ust.ustac.team8.securepasswordmanager;
 
 import hk.ust.ustac.team8.applicationutility.AppFileUtility;
+import hk.ust.ustac.team8.generalutility.AndroidUtility;
 import hk.ust.ustac.team8.hashingscheme.HashingScheme;
 
 import android.app.Activity;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,22 +51,55 @@ public class ListSavedInfoActivity extends Activity implements AdapterView.OnIte
         listView.setOnItemClickListener(this);
         listView.setOnItemLongClickListener(this);
 
-        // TODO: remove debug code
-        manager.reloadAllSchemes();
-        manager.getSettings().currentScheme = manager.getAllSchemes().getFirst();
-
         // get data and set
-        scheme = manager.getSettings().currentScheme;
+        setSchemeByState();
 
         setSubTitleText();
+
+        reloadListView();
+    }
+
+    private void setSchemeByState() {
+        if (manager.getSettings().currentState == ApplicationState.LIST_INFO) {
+            if (manager.getSettings().carriedInfo == null) {
+                manager.popState(null);
+                AndroidUtility.activityExceptionExit(this, "Null carried info for LIST_INFO");
+            }
+
+            Object obj = manager.getSettings().carriedInfo[0];
+            if (obj.getClass() != String.class) {
+                manager.popState(null);
+                AndroidUtility.activityExceptionExit(this, "Non-string for LIST_INFO");
+            }
+
+            String schemeName = (String)obj;
+            HashingScheme tScheme = manager.getSchemeByName(schemeName);
+            if (tScheme == null) {
+                manager.popState(null);
+                AndroidUtility.activityExceptionExit(this, "Scheme not exist for LIST_INFO");
+            }
+
+            scheme = tScheme;
+        }
+        else {
+            manager.popState(null);
+            AndroidUtility.activityExceptionExit(this, "Invalid state for ListSavedInfo");
+        }
+    }
+
+    private void reloadListView() {
 
         LinkedList<String> infos = new LinkedList<String>();
         try {
             infos = AppFileUtility.getAllSavedInfoOfScheme(getApplicationContext(), scheme.getName());
         }
         catch (Exception e) {
-            //TODO: notify failure
+            Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.failed_loading_infolist) ,
+                    Toast.LENGTH_SHORT);
+            toast.show();
         }
+
+        infoList.clear();
 
         for (String info : infos) {
             HashMap<String, String> item = new HashMap<String, String>();
@@ -79,10 +114,8 @@ public class ListSavedInfoActivity extends Activity implements AdapterView.OnIte
     }
 
     private void setSubTitleText() {
-        String text = "Scheme: ";
-        text += scheme.getName();
-        text += '\n';
-        text += "Tap to view, hold to delete";
+        String text = getString(R.string.subtitle_activity_list_saved_info);
+        text = text.replace("%1", scheme.getName());
 
         subTitleText.setText(text);
     }
@@ -100,6 +133,7 @@ public class ListSavedInfoActivity extends Activity implements AdapterView.OnIte
 
     @Override
     public void onBackPressed() {
-        //TODO: implement back
+        manager.popState(null);
+        finish();
     }
 }

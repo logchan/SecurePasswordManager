@@ -16,6 +16,7 @@ import hk.ust.ustac.team8.passwordutility.OnceSaltAppender;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -269,5 +270,10 @@ public final class ApplicationManager {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public void showToast(String text) {
+        Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

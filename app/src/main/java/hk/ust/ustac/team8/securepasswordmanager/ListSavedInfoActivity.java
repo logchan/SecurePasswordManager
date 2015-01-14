@@ -59,7 +59,7 @@ public class ListSavedInfoActivity extends Activity implements AdapterView.OnIte
 
         setSubTitleText();
 
-        reloadListView();
+        reloadDataAndListView();
     }
 
     private void setSchemeByState() {
@@ -90,7 +90,7 @@ public class ListSavedInfoActivity extends Activity implements AdapterView.OnIte
         }
     }
 
-    private void reloadListView() {
+    private void reloadDataAndListView() {
 
         LinkedList<String> infos = new LinkedList<String>();
         try {
@@ -163,8 +163,40 @@ public class ListSavedInfoActivity extends Activity implements AdapterView.OnIte
 
     @Override
     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+        // prompt the user if the entry shall be deleted
         HashMap<String, String> item = (HashMap<String, String>) adapter.getItem(position);
+        promptDeleteSavedInfo(item.get("name"));
+
         return true;
+    }
+
+    private void promptDeleteSavedInfo(final String infoName) {
+        String title = getString(R.string.delete_info_dialog).replace("%1", infoName);
+
+        AlertDialog dialog = AndroidUtility.createSimpleAlertDialog(this, title,
+                getString(R.string.are_you_sure), getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // yes
+                        deleteSavedInfo(infoName);
+                    }
+                }, getString(R.string.no), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // no
+                    }
+                });
+        dialog.show();
+    }
+
+    private void deleteSavedInfo(String infoName) {
+        if (manager.deleteschemeInfo(scheme.getName(), infoName)) {
+            manager.showToast(getString(R.string.info_deleted));
+            reloadDataAndListView();
+        }
+        else {
+            manager.showToast(getString(R.string.info_delete_failed));
+        }
     }
 
     @Override

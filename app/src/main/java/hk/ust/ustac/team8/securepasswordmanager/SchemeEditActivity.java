@@ -37,6 +37,8 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
 
     private String oldName;
 
+    private String allSchemesBeforeEdit;
+
     private ListView listView;
 
     private Button doneBtn;
@@ -62,14 +64,41 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
         doneBtn.setOnClickListener(this);
         addBtn.setOnClickListener(this);
 
-        // get items and set adapter
+        // get scheme
         setSchemeByState();
 
-        initTheList();
-
+        // set the list and the view
+        if (scheme != null) {
+            initTheList();
+        }
     }
 
+    @Override
+    public void onBackPressed() {
+        // ask if the user want to save before exiting
+        AlertDialog dialog = AndroidUtility.createSimpleAlertDialog(this, getString(R.string.ask_save),
+                null, getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        performSaveAndExit();
+                    }
+                }, getString(R.string.no), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // do nothing
+                        manager.popState(null);
+                        finish();
+                    }
+                });
+        dialog.show();
+    }
+
+    /**
+     * Check the current state and set the scheme
+     */
     private void setSchemeByState() {
+        scheme = null;
+
         switch (manager.getSettings().currentState) {
             case EDIT_SCHEME_CURRENT:
                 // editing an existing scheme
@@ -84,6 +113,7 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
                     AndroidUtility.activityExceptionExit(this, "Non-string for EDIT_SCHEME_CURRENT");
                 }
 
+                // set the scheme by name
                 String schemeName = (String)obj;
                 HashingScheme tScheme = manager.getSchemeByName(schemeName);
                 if (tScheme == null) {
@@ -95,14 +125,22 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
                 break;
 
             case EDIT_SCHEME_NEW:
-                scheme = new HashingScheme("A Scheme", "This scheme is for...", HashingSchemeCrypto.MD5, HashingSchemeTransform.NO_TRANSFORM);
+                // making a new scheme
+                scheme = new HashingScheme(getString(R.string.scheme_name_default),
+                       getString(R.string.scheme_desc_default),
+                        HashingSchemeCrypto.MD5, HashingSchemeTransform.NO_TRANSFORM);
                 break;
 
             default:
                 manager.popState(null);
                 AndroidUtility.activityExceptionExit(this, "Invalid state for SchemeEdit");
         }
-        oldName = scheme.getName();
+
+        if (scheme != null) {
+            oldName = scheme.getName();
+        }
+
+        allSchemesBeforeEdit = manager.getAllSchemesName("/");
     }
 
     /**
@@ -122,12 +160,20 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
      * initialize the list by adding scheme properties (name, desc, crypto, etc) and then fields
      */
     private void initTheList() {
+        if (scheme == null) {
+            return;
+        }
+
+        if (theList == null) {
+            theList = new ArrayList<HashMap<String,String>>();
+        }
+
         theList.clear();
 
-        putItemInTheList(scheme.getName(), "Name of the scheme");
-        putItemInTheList(scheme.getDescription(), "Description of the scheme");
-        putItemInTheList(scheme.getCrypto().toString(), "Hashing method of the scheme");
-        putItemInTheList(getString(AppUtility.getTransformStringID(scheme.getTransform())), "Transform after hashing");
+        putItemInTheList(scheme.getName(), getString(R.string.scheme_name_desc));
+        putItemInTheList(scheme.getDescription(), getString(R.string.scheme_description_desc));
+        putItemInTheList(scheme.getCrypto().toString(), getString(R.string.scheme_crypto_desc));
+        putItemInTheList(getString(AppUtility.getTransformStringID(scheme.getTransform())), getString(R.string.scheme_transform_desc));
 
         int fieldCount = scheme.getFieldCount();
         for (int i = 0; i < fieldCount; ++i) {
@@ -140,9 +186,18 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
         listView.setAdapter(adapter);
     }
 
+    /**
+     * Prompt the user to edit a field. Will check the index bound first.
+     * @param index the field to edit
+     */
     private void editHashingField(final int index) {
+        if (index >= scheme.getFieldCount()) {
+            return;
+        }
+
         HashingSchemeField field = scheme.getField(index);
 
+        // setup the dialog for input
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.edit_field));
         final View view = getLayoutInflater().inflate(R.layout.dialog_edit_field, null);
@@ -156,7 +211,6 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
         builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
                 applyHashingFieldEdit(index, nameED.getText().toString(), descED.getText().toString());
             }
         });
@@ -171,6 +225,12 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
         builder.show();
     }
 
+    /**
+     * Apply the field editing. Will not check the index bound.
+     * @param index
+     * @param name
+     * @param desc
+     */
     private void applyHashingFieldEdit(int index, String name, String desc) {
         HashingSchemeField field = scheme.getField(index);
         field.setName(name);
@@ -179,10 +239,16 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
     }
 
     private void performSaveAndExit() {
+        // validate the name
+        if (!manager.nameIsValid(scheme.getName())) {
+            manager.showToastLong(getString(R.string.naming_rule));
+            return;
+        }
+
+        // check for other scheme of the same name
         if (!scheme.getName().equals(oldName)) {
-            if (manager.haveSchemeOfName(scheme.getName())) {
-                Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.scheme_name_exists), Toast.LENGTH_SHORT);
-                toast.show();
+            if (allSchemesBeforeEdit.contains(scheme.getName())) {
+                manager.showToast(getString(R.string.scheme_name_exists));
                 return;
             }
             else {
@@ -201,32 +267,13 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
                 performSaveAndExit();
                 break;
             case R.id.schemeEditAddBtn:
-                scheme.addField(new HashingSchemeField(HashingSchemeFieldType.STRING, "new field",
-                        "this field is for..."));
+                scheme.addField(new HashingSchemeField(HashingSchemeFieldType.STRING,
+                        getString(R.string.field_name_default), getString(R.string.field_desc_default)));
                 editHashingField(scheme.getFieldCount() - 1);
                 break;
             default:
                 break;
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        AlertDialog dialog = AndroidUtility.createSimpleAlertDialog(this, getString(R.string.ask_save),
-                null, getString(R.string.yes), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        performSaveAndExit();
-                    }
-                }, getString(R.string.no), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // do nothing
-                        manager.popState(null);
-                        finish();
-                    }
-                });
-        dialog.show();
     }
 
     /*
@@ -299,8 +346,16 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
         builder.show();
     }
 
+    /**
+     * Prompt the user to decide delete. Will check index bound.
+     * @param index
+     */
     private void promptDeletefield(final int index) {
-        AlertDialog dialog = AndroidUtility.createSimpleAlertDialog(this, "Delete \"" + scheme.getField(index).getName() + "\"",
+        if (index >= scheme.getFieldCount()) {
+            return;
+        }
+        String title = getString(R.string.delete_field_dialog).replace("%1", scheme.getField(index).getName());
+        AlertDialog dialog = AndroidUtility.createSimpleAlertDialog(this, title,
                 getString(R.string.are_you_sure), getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

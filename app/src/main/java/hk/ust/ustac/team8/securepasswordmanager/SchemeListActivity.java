@@ -57,6 +57,11 @@ public class SchemeListActivity extends Activity implements Button.OnClickListen
         reloadAllItems();
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
     private void reloadAllItems() {
         schemeList.clear();
 
@@ -71,11 +76,6 @@ public class SchemeListActivity extends Activity implements Button.OnClickListen
         adapter = new SimpleAdapter(this, schemeList, android.R.layout.simple_list_item_2,
                 new String[] { "name", "description" }, new int[] { android.R.id.text1, android.R.id.text2});
         listView.setAdapter(adapter);
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
     }
 
     @Override
@@ -111,6 +111,9 @@ public class SchemeListActivity extends Activity implements Button.OnClickListen
         }
     }
 
+    /**
+     * Ask the user to choose one option for the long-clicked scheme
+     */
     @Override
     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
         final String[] options =  new String[] { getString(R.string.edit_this_scheme),
@@ -140,8 +143,13 @@ public class SchemeListActivity extends Activity implements Button.OnClickListen
         return true;
     }
 
+    /**
+     * Ask the user to decide delete
+     */
     private void promptDeleteScheme(final String schemeName) {
-        AlertDialog dialog = AndroidUtility.createSimpleAlertDialog(this, "Delete \"" + schemeName + "\"",
+        String title = getString(R.string.delete_scheme_dialog).replace("%1", schemeName);
+
+        AlertDialog dialog = AndroidUtility.createSimpleAlertDialog(this, title,
                 getString(R.string.are_you_sure), getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

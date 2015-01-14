@@ -28,8 +28,6 @@ public class InitActivity extends Activity {
         // load settings
         manager.loadAppSettings();
 
-        manager.reloadAllSchemes();
-
         // prepare going to main
         Handler handler = new Handler();
         Runnable runnable = new Runnable() {

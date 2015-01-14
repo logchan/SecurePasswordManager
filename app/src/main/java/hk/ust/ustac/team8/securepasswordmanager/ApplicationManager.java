@@ -140,15 +140,14 @@ public final class ApplicationManager {
         return null;
     }
 
-    public boolean haveSchemeOfName(String name) {
+    public String getAllSchemesName(String separator) {
+        StringBuilder builder = new StringBuilder();
         for (HashingScheme scheme : schemes) {
-            if (scheme.getName().equals(name)) {
-                return true;
-            }
+            builder.append(scheme.getName());
+            builder.append(separator);
         }
-        return false;
+        return builder.toString();
     }
-
     /**
      * Save the scheme.
      *
@@ -235,6 +234,16 @@ public final class ApplicationManager {
         currentActivity.startActivity(intent);
     }
 
+    public void switchToMainClear(Activity currentActivity) {
+        settings.currentState = ApplicationState.MAIN;
+        settings.lastState = ApplicationState.INIT;
+        settings.carriedInfo = new Object[] { };
+
+        Intent intent = new Intent(currentActivity, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        currentActivity.startActivity(intent);
+    }
+
     public LinkedList<String> getAllSavedInfo(String schemeName) {
         try {
             return AppFileUtility.getAllSavedInfoOfScheme(context, schemeName);
@@ -275,5 +284,14 @@ public final class ApplicationManager {
     public void showToast(String text) {
         Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
         toast.show();
+    }
+
+    public void showToastLong(String text) {
+        Toast toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
+        toast.show();
+    }
+
+    public boolean nameIsValid(String name) {
+        return name.matches("[a-zA-Z0-9\\.\\-_\\(\\)\\[\\]\\s]+");
     }
 }

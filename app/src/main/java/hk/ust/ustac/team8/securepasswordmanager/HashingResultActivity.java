@@ -29,25 +29,6 @@ public class HashingResultActivity extends Activity implements SeekBar.OnSeekBar
 
     private SeekBar resultSizeSeek;
 
-    private void setHashingResultText(String result) {
-        StringBuilder toDisplay = new StringBuilder();
-
-        int len = result.length();
-        for (int i = 0; i < len; ++i) {
-            toDisplay.append(result.charAt(i));
-            if ((i + 1) < len && (i + 1) % 4 == 0) {
-                if ((i + 1) % 8 == 0) {
-                    toDisplay.append('\n');
-                }
-                else {
-                    toDisplay.append(' '); // a whitespace
-                }
-            }
-        }
-
-        hashingResultText.setText(toDisplay.toString());
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,19 +98,22 @@ public class HashingResultActivity extends Activity implements SeekBar.OnSeekBar
             case R.id.hashingResultBackBtn:
                 onBackPressed();
                 break;
+
             case R.id.hashingResultDoneBtn:
+                // all done, reset state and goto Main
                 manager.getSettings().currentScheme = null;
                 manager.getSettings().lastHashingResult = "";
-                manager.switchActivity(this, MainActivity.class, ApplicationState.MAIN);
-                finish();
+                manager.switchToMainClear(this);
                 break;
+
             case R.id.hashingResultCopyBtn:
+                // copy the result to clipboard
                 ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clipData = ClipData.newPlainText("hash", manager.getSettings().lastHashingResult);
                 clipboardManager.setPrimaryClip(clipData);
 
-                AlertDialog dialog = AndroidUtility.createSimpleAlertDialog(this, null, "Succefully copied result",
-                        "OK", new DialogInterface.OnClickListener() {
+                AlertDialog dialog = AndroidUtility.createSimpleAlertDialog(this, null, getString(R.string.result_copied),
+                        getString(R.string.ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 // do nothing
@@ -138,5 +122,24 @@ public class HashingResultActivity extends Activity implements SeekBar.OnSeekBar
                 dialog.show();
                 break;
         }
+    }
+
+    private void setHashingResultText(String result) {
+        StringBuilder toDisplay = new StringBuilder();
+
+        int len = result.length();
+        for (int i = 0; i < len; ++i) {
+            toDisplay.append(result.charAt(i));
+            if ((i + 1) < len && (i + 1) % 4 == 0) {
+                if ((i + 1) % 8 == 0) {
+                    toDisplay.append('\n');
+                }
+                else {
+                    toDisplay.append(' '); // a whitespace
+                }
+            }
+        }
+
+        hashingResultText.setText(toDisplay.toString());
     }
 }

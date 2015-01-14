@@ -62,8 +62,19 @@ public class ListSavedInfoActivity extends Activity implements AdapterView.OnIte
         reloadDataAndListView();
     }
 
+    @Override
+    public void onBackPressed() {
+        manager.popState(null);
+        finish();
+    }
+
+    /**
+     * Check current state and set scheme
+     */
     private void setSchemeByState() {
+        // validate state
         if (manager.getSettings().currentState == ApplicationState.LIST_INFO) {
+            // validate carried information
             if (manager.getSettings().carriedInfo == null) {
                 manager.popState(null);
                 AndroidUtility.activityExceptionExit(this, "Null carried info for LIST_INFO");
@@ -75,6 +86,7 @@ public class ListSavedInfoActivity extends Activity implements AdapterView.OnIte
                 AndroidUtility.activityExceptionExit(this, "Non-string for LIST_INFO");
             }
 
+            // get the scheme from name
             String schemeName = (String)obj;
             HashingScheme tScheme = manager.getSchemeByName(schemeName);
             if (tScheme == null) {
@@ -90,6 +102,9 @@ public class ListSavedInfoActivity extends Activity implements AdapterView.OnIte
         }
     }
 
+    /**
+     * Reload the list of saved information, then update the listview
+     */
     private void reloadDataAndListView() {
 
         LinkedList<String> infos = new LinkedList<String>();
@@ -97,9 +112,7 @@ public class ListSavedInfoActivity extends Activity implements AdapterView.OnIte
             infos = AppFileUtility.getAllSavedInfoOfScheme(getApplicationContext(), scheme.getName());
         }
         catch (Exception e) {
-            Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.failed_loading_infolist) ,
-                    Toast.LENGTH_SHORT);
-            toast.show();
+            manager.showToast(getString(R.string.failed_loading_infolist));
         }
 
         infoList.clear();
@@ -112,10 +125,13 @@ public class ListSavedInfoActivity extends Activity implements AdapterView.OnIte
         }
 
         adapter = new SimpleAdapter(this, infoList, android.R.layout.simple_list_item_2,
-                new String[] { "name", "description"}, new int[] { android.R.id.text1, android.R.id.text2});
+                new String[] { "name", "description" }, new int[] { android.R.id.text1, android.R.id.text2});
         listView.setAdapter(adapter);
     }
 
+    /**
+     * Set the subtitle text to show the scheme name
+     */
     private void setSubTitleText() {
         String text = getString(R.string.subtitle_activity_list_saved_info);
         text = text.replace("%1", scheme.getName());
@@ -155,9 +171,7 @@ public class ListSavedInfoActivity extends Activity implements AdapterView.OnIte
             dialog.show();
         }
         else {
-            Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.failed_loading_that_info),
-                    Toast.LENGTH_SHORT);
-            toast.show();
+            manager.showToast(getString(R.string.failed_loading_that_info));
         }
     }
 
@@ -170,6 +184,9 @@ public class ListSavedInfoActivity extends Activity implements AdapterView.OnIte
         return true;
     }
 
+    /**
+     * Prompt the user if the information should be deleted
+     */
     private void promptDeleteSavedInfo(final String infoName) {
         String title = getString(R.string.delete_info_dialog).replace("%1", infoName);
 
@@ -197,11 +214,5 @@ public class ListSavedInfoActivity extends Activity implements AdapterView.OnIte
         else {
             manager.showToast(getString(R.string.info_delete_failed));
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        manager.popState(null);
-        finish();
     }
 }

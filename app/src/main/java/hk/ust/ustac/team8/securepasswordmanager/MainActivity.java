@@ -78,5 +78,4 @@ public class MainActivity extends Activity implements Button.OnClickListener {
 
         manager.switchActivity(this, SchemeListActivity.class, nextState);
     }
-
 }

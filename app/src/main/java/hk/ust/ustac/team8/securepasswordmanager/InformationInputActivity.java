@@ -79,14 +79,17 @@ public class InformationInputActivity extends Activity implements Button.OnClick
         loadBtn.setOnClickListener(this);
         saveBtn.setOnClickListener(this);
 
-        // get fields
-        if (manager.getSettings().lastState == ApplicationState.SHOW_HASHING_RESULT) {
+        // get scheme
+        if (manager.getSettings().lastState == ApplicationState.SHOW_HASHING_RESULT
+                && manager.getSettings().currentScheme != null) {
+            // coming from result page
             scheme = manager.getSettings().currentScheme;
         }
         else {
             setSchemeByState();
         }
 
+        // load the saved information of the scheme
         savedInfos = manager.getAllSavedInfo(scheme.getName());
         if (savedInfos == null) {
             savedInfos = new LinkedList<String>();
@@ -95,11 +98,22 @@ public class InformationInputActivity extends Activity implements Button.OnClick
         initListView(false);
     }
 
+    @Override
+    public void onBackPressed() {
+        manager.getSettings().currentState = ApplicationState.SELECT_SCHEME_FOR_PASSWORD_GEN;
+        manager.getSettings().lastState = ApplicationState.INPUT_INFO_FOR_PASSWORD_GEN;
+        finish();
+    }
+
     private void setSchemeByState() {
+        // current state shall be INPUT_INFO_FOR_PASSWORD_GEN
+        // carried information shall be the name of scheme
+
         if (manager.getSettings().currentState != ApplicationState.INPUT_INFO_FOR_PASSWORD_GEN) {
             AndroidUtility.activityExceptionExit(this, "Invalid state for INPUT_INFO");
         }
 
+        // validate carried information
         if (manager.getSettings().carriedInfo == null || manager.getSettings().carriedInfo.length == 0) {
             AndroidUtility.activityExceptionExit(this, "No carried info for INPUT_INFO");
         }
@@ -109,12 +123,14 @@ public class InformationInputActivity extends Activity implements Button.OnClick
             AndroidUtility.activityExceptionExit(this, "Non-string carried for INPUT_INFO");
         }
 
+        // get the scheme from name
         String name = (String) obj;
         scheme = manager.getSchemeByName(name);
         if (scheme == null) {
             AndroidUtility.activityExceptionExit(this, "Scheme for INPUT_INFO not found");
         }
 
+        // reset the filled value of scheme
         int fieldCount = scheme.getFieldCount();
         for (int i = 0; i < fieldCount; ++i) {
             HashingSchemeField field = scheme.getField(i);
@@ -123,6 +139,7 @@ public class InformationInputActivity extends Activity implements Button.OnClick
     }
 
     private void initListView(boolean showValues) {
+        // (re-)initialize the listView
         fieldList.clear();
 
         int fieldCount = scheme.getFieldCount();
@@ -146,13 +163,6 @@ public class InformationInputActivity extends Activity implements Button.OnClick
     }
 
     @Override
-    public void onBackPressed() {
-        manager.getSettings().currentState = ApplicationState.SELECT_SCHEME_FOR_PASSWORD_GEN;
-        manager.getSettings().lastState = ApplicationState.INPUT_INFO_FOR_PASSWORD_GEN;
-        finish();
-    }
-
-    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.infoFillLoadBtn:
@@ -172,6 +182,7 @@ public class InformationInputActivity extends Activity implements Button.OnClick
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        // ask the user to fill the value of the field
         HashingSchemeField field = scheme.getField(position);
         AndroidUtility.promptForOneInput(this, field.getName(), field.getValue(), getString(R.string.field_hint),
                 this, true, "field", position);
@@ -179,6 +190,7 @@ public class InformationInputActivity extends Activity implements Button.OnClick
 
     @Override
     public void receivePromptOneInput(String output, Object... extraInfo) {
+        /** validate extraInfo (shall have the String denoting action) **/
         if (output == null || extraInfo == null || extraInfo.length == 0) {
             return;
         }
@@ -188,9 +200,10 @@ public class InformationInputActivity extends Activity implements Button.OnClick
             return;
         }
 
+        /** move on according to action**/
         String action = (String) obj;
-
         if (action.equals("field") && extraInfo.length > 1) {
+            // fill the field value
             obj = extraInfo[1];
             if (obj.getClass() != int.class && obj.getClass() != Integer.class) {
                 return;
@@ -202,8 +215,16 @@ public class InformationInputActivity extends Activity implements Button.OnClick
             initListView(true);
         }
         else if (action.equals("save")) {
-
+            /** save the info **/
             final String infoName = output;
+
+            // validate infoName
+            if (!manager.nameIsValid(infoName)) {
+                manager.showToast(getString(R.string.naming_rule));
+                return;
+            }
+
+            // check if info of the same name exists
             if (savedInfos.contains(infoName)) {
                 // ask if overwrite
                 AlertDialog dialog = AndroidUtility.createSimpleAlertDialog(this, getString(R.string.ask_overwrite),
@@ -221,6 +242,7 @@ public class InformationInputActivity extends Activity implements Button.OnClick
                 dialog.show();
             }
             else {
+                // no same name, just save
                 saveInfo(infoName);
             }
         }
@@ -234,11 +256,13 @@ public class InformationInputActivity extends Activity implements Button.OnClick
         else {
             result = getString(R.string.info_save_failed);
         }
-        Toast toast = Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT);
-        toast.show();
+        manager.showToast(result);
         savedInfos = manager.getAllSavedInfo(scheme.getName());
     }
 
+    /**
+     * Prompt a list and ask the user to choose the information set to load
+     */
     private void promptLoadInfo() {
         // final String[] options = (String[])savedInfos.toArray(); //WRONG!
         final String[] options = savedInfos.toArray(new String[savedInfos.size()]);
@@ -260,19 +284,24 @@ public class InformationInputActivity extends Activity implements Button.OnClick
 
         if (savedInfo != null) {
             scheme.importFieldValues(savedInfo);
+            lastLoadedInfo = infoName;
             result = getString(R.string.info_load_success);
         }
         else {
             result = getString(R.string.info_load_failed);
         }
 
-        Toast toast = Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT);
-        toast.show();
+        manager.showToast(result);
 
         initListView(true);
     }
 
+    /**
+     * Do the hashing, and show the result
+     */
     private void doProceed() {
+
+        /** Get how many times to hash **/
         int timeToHash = 1;
 
         try {
@@ -285,6 +314,7 @@ public class InformationInputActivity extends Activity implements Button.OnClick
             timeToHash = 1;
         }
 
+        /** Get the length of result **/
         int resultLen = 16;
 
         try {
@@ -299,19 +329,17 @@ public class InformationInputActivity extends Activity implements Button.OnClick
 
         final int iterations = timeToHash;
         final int maxResultLen = resultLen;
-
-        // prompt for password
         final Activity activity = this;
+
+        /** Prompt for the secret, hash and then proceed to result page **/
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+        // setup the dialog
         builder.setTitle(getString(R.string.prompt_secret));
-
         final View view = getLayoutInflater().inflate(R.layout.dialog_one_input, null);
         final EditText edit = (EditText)view.findViewById(R.id.dialogInput);
-
         edit.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-
         builder.setView(view);
 
         builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
@@ -326,17 +354,14 @@ public class InformationInputActivity extends Activity implements Button.OnClick
                         result = result.substring(0, maxResultLen);
                     }
 
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            getString(R.string.hashing_status_text).replace("%1", ((Integer)iterations).toString()),
-                            Toast.LENGTH_SHORT);
-                    toast.show();
+                    manager.showToast(getString(R.string.hashing_status_text)
+                                        .replace("%1", ((Integer)iterations).toString()));
 
                     manager.getSettings().lastHashingResult = result;
                     manager.switchActivity(activity, HashingResultActivity.class, ApplicationState.SHOW_HASHING_RESULT);
                 }
                 catch (Exception e) {
-                    Toast toast = Toast.makeText(getApplicationContext(), activity.getString(R.string.exception_exit), Toast.LENGTH_SHORT);
-                    toast.show();
+                    manager.showToast(activity.getString(R.string.exception_exit));
                 }
             }
         });

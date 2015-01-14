@@ -17,6 +17,17 @@
     <string name="cancel">Cancel</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="exception_exit">Something went wrong…</string>
+    <string name="naming_rule">Name shall only contain letters, numbers, spaces and []().-_</string>
+
+    <!-- Common-Schemes -->
+    <string name="scheme_name_default">a scheme</string>
+    <string name="scheme_desc_default">this scheme is for ..</string>
+    <string name="field_name_default">a field</string>
+    <string name="field_desc_default">this field is ..</string>
+    <string name="scheme_name_desc">The name of this scheme</string>
+    <string name="scheme_description_desc">The description of this scheme</string>
+    <string name="scheme_crypto_desc">The method to perform hashing</string>
+    <string name="scheme_transform_desc">The transform of result after hashing</string>
 
     <!-- Transform -->
     <string name="trans_no_transform">No transform</string>
@@ -43,6 +54,7 @@
     <string name="new_scheme">New Scheme</string>
     <string name="edit_this_scheme">Edit this scheme</string>
     <string name="delete_this_scheme">Delete this scheme</string>
+    <string name="delete_scheme_dialog">Delete \"%1\"?</string>
 
     <!-- Info Input Page -->
     <string name="title_activity_information_input">Fill information</string>
@@ -70,6 +82,7 @@
     <string name="subtitle_activity_hashing_result">Don\'t let others see!</string>
     <string name="hashing_result_change_fontsize">Change text size</string>
     <string name="copy_hashing_result">Copy Result</string>
+    <string name="result_copied">Succefully copied result</string>
 
     <!-- Scheme Edit Page -->
     <string name="title_activity_scheme_edit">Edit Scheme</string>
@@ -84,6 +97,7 @@
     <string name="scheme_transform">Transform</string>
     <string name="md5_is_the_only_one">Sorry, this is the only option for now.</string>
     <string name="scheme_name_exists">Scheme of the same name already exists.</string>
+    <string name="delete_field_dialog">Delete \"%1\"?</string>
 
     <!-- Saved Info Page -->
     <string name="title_activity_list_saved_info">Saved Information</string>

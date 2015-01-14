@@ -62,9 +62,9 @@ public class SettingActivity extends Activity implements SeekBar.OnSeekBarChange
                         /*** apply, save and exit ***/
 
                         // get time to hash
-                        int timeToHash;
+                        int timeToHash = -1;
                         try {
-                            timeToHash = Integer.getInteger(timeText.getText().toString());
+                            timeToHash = Integer.valueOf(timeText.getText().toString());
                             if (timeToHash <= 0 || timeToHash > 100) {
                                 throw new Exception();
                             }
@@ -78,7 +78,7 @@ public class SettingActivity extends Activity implements SeekBar.OnSeekBarChange
                         // get result length
                         int resultLength;
                         try {
-                            resultLength = Integer.getInteger(resultLengthText.getText().toString());
+                            resultLength = Integer.valueOf(resultLengthText.getText().toString());
                             if (resultLength <= 0 || resultLength > 32) {
                                 throw new Exception();
                             }

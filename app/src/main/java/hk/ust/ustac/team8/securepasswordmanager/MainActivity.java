@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends Activity implements Button.OnClickListener, MenuItem.OnMenuItemClickListener {
+public class MainActivity extends Activity implements Button.OnClickListener {
 
     private ApplicationManager manager;
 
@@ -16,10 +16,6 @@ public class MainActivity extends Activity implements Button.OnClickListener, Me
     private Button manScheBtn;
 
     private Button manInfoBtn;
-
-    private MenuItem settingBtn;
-
-    private MenuItem aboutBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +29,11 @@ public class MainActivity extends Activity implements Button.OnClickListener, Me
         genPwdBtn = (Button) findViewById(R.id.mainGenPwdBtn);
         manScheBtn = (Button) findViewById(R.id.mainManScheBtn);
         manInfoBtn = (Button) findViewById(R.id.mainManInfoBtn);
-        settingBtn = (MenuItem) findViewById(R.id.action_settings);
-        aboutBtn = (MenuItem) findViewById(R.id.action_about);
 
         // set listener
         genPwdBtn.setOnClickListener(this);
         manScheBtn.setOnClickListener(this);
         manInfoBtn.setOnClickListener(this);
-        settingBtn.setOnMenuItemClickListener(this);
-        aboutBtn.setOnMenuItemClickListener(this);
     }
 
     /*** Menu Starts ***/
@@ -85,20 +77,5 @@ public class MainActivity extends Activity implements Button.OnClickListener, Me
         }
 
         manager.switchActivity(this, SchemeListActivity.class, nextState);
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case R.id.action_settings:
-                manager.switchActivity(this, SettingActivity.class, ApplicationState.SETTING);
-                break;
-            case R.id.action_about:
-                // TODO: navigate to about page
-                break;
-            default:
-                return false;
-        }
-        return true;
     }
 }

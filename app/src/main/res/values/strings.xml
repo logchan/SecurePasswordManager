@@ -92,6 +92,8 @@
     <string name="hashing_result_change_fontsize">Change text size</string>
     <string name="copy_hashing_result">Copy Result</string>
     <string name="result_copied">Succefully copied result</string>
+    <string name="hide_result">Hide result</string>
+    <string name="result_hidden">HIDDEN</string>
 
     <!-- Scheme Edit Page -->
     <string name="title_activity_scheme_edit">Edit Scheme</string>

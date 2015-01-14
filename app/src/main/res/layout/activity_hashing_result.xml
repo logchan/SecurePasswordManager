@@ -23,6 +23,15 @@
             android:text="@string/subtitle_activity_hashing_result"
             />
 
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextViewTheme.SettingsTitle"
+            android:layout_marginLeft="0dp"
+            android:text="@string/hide_result"
+            android:id="@+id/hashingResultHideCheck"
+            />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

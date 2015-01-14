@@ -96,6 +96,10 @@ public class InformationInputActivity extends Activity implements Button.OnClick
         }
 
         initListView(false);
+
+        // apply the application settings
+        timeToHashED.setText(((Integer)manager.getSettings().defaultHashingTimes).toString());
+        resultLenED.setText(((Integer)manager.getSettings().defaultResultLength).toString());
     }
 
     @Override

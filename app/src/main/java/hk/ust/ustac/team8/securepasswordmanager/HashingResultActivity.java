@@ -12,10 +12,13 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class HashingResultActivity extends Activity implements SeekBar.OnSeekBarChangeListener, Button.OnClickListener {
+public class HashingResultActivity extends Activity implements SeekBar.OnSeekBarChangeListener, Button.OnClickListener,
+        CompoundButton.OnCheckedChangeListener {
 
     private ApplicationManager manager;
 
@@ -28,6 +31,8 @@ public class HashingResultActivity extends Activity implements SeekBar.OnSeekBar
     private Button copyBtn;
 
     private SeekBar resultSizeSeek;
+
+    private CheckBox hideCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,17 +56,28 @@ public class HashingResultActivity extends Activity implements SeekBar.OnSeekBar
         backBtn = (Button) findViewById(R.id.hashingResultBackBtn);
         doneBtn = (Button) findViewById(R.id.hashingResultDoneBtn);
         copyBtn = (Button) findViewById(R.id.hashingResultCopyBtn);
+        hideCheck = (CheckBox) findViewById(R.id.hashingResultHideCheck);
 
         // setup listener
         resultSizeSeek.setOnSeekBarChangeListener(this);
         backBtn.setOnClickListener(this);
         doneBtn.setOnClickListener(this);
         copyBtn.setOnClickListener(this);
+        hideCheck.setOnCheckedChangeListener(this);
 
         // set view
-        resultSizeSeek.setProgress(manager.getSettings().resultFontsize);
         hashingResultText.setTextSize(TypedValue.COMPLEX_UNIT_SP, manager.getSettings().resultFontsize);
-        setHashingResultText(manager.getSettings().lastHashingResult);
+
+        // apply the application settings
+        resultSizeSeek.setProgress(manager.getSettings().resultFontsize);
+        if (manager.getSettings().hideResult) {
+            hideCheck.setChecked(true);
+            hashingResultText.setText(getString(R.string.result_hidden));
+        }
+        else {
+            hideCheck.setChecked(false);
+            setHashingResultText(manager.getSettings().lastHashingResult);
+        }
     }
 
     @Override
@@ -141,5 +157,15 @@ public class HashingResultActivity extends Activity implements SeekBar.OnSeekBar
         }
 
         hashingResultText.setText(toDisplay.toString());
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        if (compoundButton.isChecked()) {
+            hashingResultText.setText(getString(R.string.result_hidden));
+        }
+        else {
+            setHashingResultText(manager.getSettings().lastHashingResult);
+        }
     }
 }

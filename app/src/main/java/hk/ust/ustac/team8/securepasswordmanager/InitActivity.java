@@ -1,26 +1,27 @@
 package hk.ust.ustac.team8.securepasswordmanager;
 
-import hk.ust.ustac.team8.hashingscheme.HashingScheme;
-
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.widget.TextView;
-
-import java.util.LinkedList;
-import java.util.Timer;
-import java.util.TimerTask;
+import android.widget.ImageView;
 
 public class InitActivity extends Activity {
 
+    private final static Integer delay = 2000;
+
     private ApplicationManager manager;
+
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_init);
+
+        // set image
+        imageView = (ImageView) findViewById(R.id.initImage);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        imageView.setImageResource(R.drawable.spmlogo_72);
 
         // set manager
         manager = ApplicationManager.getInstanceSafe(getApplicationContext());
@@ -36,7 +37,7 @@ public class InitActivity extends Activity {
                 gotoMain();
             }
         };
-        handler.postDelayed(runnable, 1000);
+        handler.postDelayed(runnable, delay);
     }
 
     private void gotoMain() {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">SecurePasswordManager</string>
+    <string name="app_name">Secure Password Manager</string>
     <string name="hello_world"></string>
 
     <!-- Menus -->
@@ -118,4 +118,6 @@
     <string name="info_deleted">Information deleted</string>
     <string name="info_delete_failed">Failed deleting the information</string>
     <string name="delete_info_dialog">Delete \"%1\"?</string>
+    <string name="title_activity_about">AboutActivity</string>
+
 </resources>

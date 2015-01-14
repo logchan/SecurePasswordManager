@@ -57,7 +57,7 @@ public class MainActivity extends Activity implements Button.OnClickListener {
                 manager.switchActivity(this, SettingActivity.class, ApplicationState.SETTING);
                 return true;
             case R.id.action_about:
-                // TODO: navigate to about
+                manager.switchActivity(this, AboutActivity.class, ApplicationState.ABOUT);
                 return true;
         }
 

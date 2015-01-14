@@ -4,6 +4,7 @@ package hk.ust.ustac.team8.securepasswordmanager;
  * Created by logchan on 1/13/2015.
  */
 public enum ApplicationState {
+    ABOUT,
     INIT,
     MAIN,
     SELECT_SCHEME_FOR_PASSWORD_GEN,

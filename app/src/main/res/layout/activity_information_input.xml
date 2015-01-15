@@ -9,6 +9,11 @@
                 android:orientation="vertical"
                 tools:context="hk.ust.ustac.team8.securepasswordmanager.InformationInputActivity">
 
+    <!-- Dummy item  -->
+    <LinearLayout
+        android:focusable="true" android:focusableInTouchMode="true"
+        android:layout_width="0px" android:layout_height="0px"/>
+
     <TextView
         style="@style/PageTitle"
         android:text="@string/title_activity_information_input"

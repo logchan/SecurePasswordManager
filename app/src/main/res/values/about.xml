@@ -2,12 +2,17 @@
 <resources>
 
     <string name="credit_main">
-        settings and about available in menu\n
-        By Team 8, HKUST Android Application Design Contest 2014
+        Settings and About available in menu\n\n
+        By Team 8,\n HKUST Android Application Design Contest 2014
+    </string>
+
+    <string name="help_main">
+        Online help available:\n
+        http://www.logu.co/spm_en\n
     </string>
 
     <string name="about_lines">
-        By Team 8, HKUST Android Application Design Contest 2014\n
+         By Team 8,\n HKUST Android Application Design Contest 2014\n
         \n
         Designed and coded by Geng LIN\n
         With help and support from Hang SHANG and Liyu CHEN\n

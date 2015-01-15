@@ -37,4 +37,11 @@
         android:id="@+id/mainManInfoBtn"
         />
 
+    <TextView
+        style="@style/TextViewTheme"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:text="@string/credit_main"
+        />
+
 </LinearLayout>

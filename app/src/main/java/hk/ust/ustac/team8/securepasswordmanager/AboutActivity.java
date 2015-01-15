@@ -14,8 +14,6 @@ public class AboutActivity extends Activity {
 
     private ImageView imageView;
 
-    private TextView contentText;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +24,6 @@ public class AboutActivity extends Activity {
 
         // set reference
         imageView = (ImageView) findViewById(R.id.aboutImage);
-        contentText = (TextView) findViewById(R.id.aboutContent);
 
         // set image
         imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="credit_main">
+        settings and about available in menu\n
+        By Team 8, HKUST Android Application Design Contest 2014
+    </string>
+
+    <string name="about_lines">
+        By Team 8, HKUST Android Application Design Contest 2014\n
+        \n
+        Designed and coded by Geng LIN\n
+        With help and support from Hang SHANG and Liyu CHEN\n
+    </string>
+
+    <string name="about_source_link">
+        Source code available:\n
+        https://github.com/logchan/SecurePasswordManager
+    </string>
+</resources>

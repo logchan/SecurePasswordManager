@@ -19,37 +19,61 @@
         android:text="@string/subtitle_activity_main"
         />
 
-    <Button
-        style="@style/ButtonTheme.MainActivity"
-        android:text="@string/generate_password"
-        android:id="@+id/mainGenPwdBtn"
-        />
-
-    <Button
-        style="@style/ButtonTheme.MainActivity"
-        android:text="@string/manage_schemes"
-        android:id="@+id/mainManScheBtn"
-        />
-
-    <Button
-        style="@style/ButtonTheme.MainActivity"
-        android:text="@string/manage_saved_information"
-        android:id="@+id/mainManInfoBtn"
-        />
-
-    <TextView
-        style="@style/TextViewTheme"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:gravity="center"
-        android:autoLink="web"
-        android:text="@string/help_main"
-        />
+        android:layout_height="fill_parent"
+        >
 
-    <TextView
-        style="@style/TextViewTheme"
-        android:layout_width="match_parent"
-        android:gravity="center"
-        android:text="@string/credit_main"
-        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/mainBottomLinear"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true">
+
+            <TextView
+                style="@style/TextViewTheme"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:autoLink="web"
+                android:text="@string/help_main"
+                />
+
+            <TextView
+                style="@style/TextViewTheme"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:text="@string/credit_main"
+                />
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_above="@id/mainBottomLinear"
+            android:orientation="vertical">
+
+            <Button
+                style="@style/ButtonTheme.MainActivity"
+                android:text="@string/generate_password"
+                android:id="@+id/mainGenPwdBtn"
+                />
+
+            <Button
+                style="@style/ButtonTheme.MainActivity"
+                android:text="@string/manage_schemes"
+                android:id="@+id/mainManScheBtn"
+                />
+
+            <Button
+                style="@style/ButtonTheme.MainActivity"
+                android:text="@string/manage_saved_information"
+                android:id="@+id/mainManInfoBtn"
+                />
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

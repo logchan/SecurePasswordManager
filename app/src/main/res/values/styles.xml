@@ -35,8 +35,8 @@
 
     <style name="ButtonTheme.MainActivity" parent="ButtonTheme">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">80dp</item>
-        <item name="android:layout_marginBottom">15dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginBottom">5dp</item>
     </style>
 
     <style name="HashingResultTheme" parent="AllControlTheme">

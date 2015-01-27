@@ -45,6 +45,8 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
 
     private Button addBtn;
 
+    private static final int STATIC_FIELDS_COUNT = 6;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,6 +131,10 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
                 scheme = new HashingScheme(getString(R.string.scheme_name_default),
                        getString(R.string.scheme_desc_default),
                         HashingSchemeCrypto.MD5, HashingSchemeTransform.NO_TRANSFORM);
+                // UPDATE 2 (2015-01-27)
+                // set time to hash and result length according to application default
+                scheme.setTimeToHash(manager.getSettings().defaultHashingTimes);
+                scheme.setResultLength(manager.getSettings().defaultResultLength);
                 break;
 
             default:
@@ -170,10 +176,15 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
 
         theList.clear();
 
+        // static fields
         putItemInTheList(scheme.getName(), getString(R.string.scheme_name_desc));
         putItemInTheList(scheme.getDescription(), getString(R.string.scheme_description_desc));
         putItemInTheList(scheme.getCrypto().toString(), getString(R.string.scheme_crypto_desc));
         putItemInTheList(getString(AppUtility.getTransformStringID(scheme.getTransform())), getString(R.string.scheme_transform_desc));
+        // UPDATE 2 (15-01-27)
+        // add two more fields for timeToHash and resultLength
+        putItemInTheList(((Integer)scheme.getTimeToHash()).toString(), getString(R.string.scheme_timetohash_desc));
+        putItemInTheList(((Integer)scheme.getResultLength()).toString(), getString(R.string.scheme_timetohash_desc));
 
         int fieldCount = scheme.getFieldCount();
         for (int i = 0; i < fieldCount; ++i) {
@@ -282,7 +293,9 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
     1 - scheme description
     2 - hashing method
     3 - transform
-    4 -> fields
+    4 - time to hash
+    5 - result length
+    6 -> fields
      */
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -290,21 +303,32 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
         switch (position) {
             case 0:
                 AndroidUtility.promptForOneInput(this, getString(R.string.scheme_name),
-                        scheme.getName(), getString(R.string.scheme_name), this, true, "name");
+                        scheme.getName(), getString(R.string.scheme_name),
+                        this, true, "name");
                 break;
             case 1:
                 AndroidUtility.promptForOneInput(this, getString(R.string.scheme_description),
-                        scheme.getDescription(), getString(R.string.scheme_description), this, true, "description");
+                        scheme.getDescription(), getString(R.string.scheme_description),
+                        this, true, "description");
                 break;
             case 2:
-                Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.md5_is_the_only_one), Toast.LENGTH_SHORT);
-                toast.show();
+                manager.showToast(getString(R.string.md5_is_the_only_one));
                 break;
             case 3:
                 promptTransformSelect();
                 break;
+            case 4:
+                AndroidUtility.promptForOneInput(this, getString(R.string.scheme_timetohash),
+                        ((Integer)scheme.getTimeToHash()).toString(), getString(R.string.scheme_timetohash),
+                        this, false, "timetohash");
+                break;
+            case 5:
+                AndroidUtility.promptForOneInput(this, getString(R.string.scheme_resultlength),
+                        ((Integer)scheme.getResultLength()).toString(), getString(R.string.scheme_resultlength),
+                        this, false, "resultlength");
+                break;
             default:
-                editHashingField(position - 4);
+                editHashingField(position - STATIC_FIELDS_COUNT);
                 break;
         }
     }
@@ -312,8 +336,8 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
     @Override
     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
         HashMap<String, String> item = (HashMap<String, String>) adapter.getItem(position);
-        if (position >= 4) {
-            promptDeletefield(position - 4);
+        if (position >= STATIC_FIELDS_COUNT) {
+            promptDeletefield(position - STATIC_FIELDS_COUNT);
             return true;
         }
         else {
@@ -400,6 +424,30 @@ public class SchemeEditActivity extends Activity implements Button.OnClickListen
         else if (action.equals("description")) {
             if (!scheme.getDescription().equals(output)) {
                 scheme.setDescription(output);
+                initTheList();
+            }
+        }
+        else if (action.equals("timetohash")) {
+            Integer time = Integer.valueOf(output);
+            if (time <= 0 || time > 100) {
+                manager.showToast(getString(R.string.hash_time_invalid));
+                return;
+            }
+
+            if (scheme.getTimeToHash() != time) {
+                scheme.setTimeToHash(time);
+                initTheList();
+            }
+        }
+        else if (action.equals("resultlength")) {
+            Integer len = Integer.valueOf(output);
+            if (len <= 0 || len > 32) {
+                manager.showToast(getString(R.string.result_length_invalid));
+                return;
+            }
+
+            if (scheme.getResultLength() != len) {
+                scheme.setResultLength(len);
                 initTheList();
             }
         }

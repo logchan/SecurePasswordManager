@@ -30,6 +30,10 @@ public class HashingScheme {
 
     private LinkedList<HashingSchemeField> fields;
 
+    private int timeToHash;
+
+    private int resultLength;
+
     public HashingScheme(String name, String description, HashingSchemeCrypto crypto, HashingSchemeTransform transform) {
         LangUtility.assertNonNull(name, "Null name provided for initialization of HashingScheme");
         LangUtility.assertNonNull(description, "Null description provided for initialization of HashingScheme");
@@ -41,6 +45,8 @@ public class HashingScheme {
         this.crypto = crypto;
         this.transform = transform;
         this.fields = new LinkedList<HashingSchemeField>();
+        this.timeToHash = 1;
+        this.resultLength = 16;
     }
 
     public String getName() {
@@ -73,6 +79,14 @@ public class HashingScheme {
 
     public ListIterator<HashingSchemeField> getFieldIterator() {
         return fields.listIterator();
+    }
+
+    public int getTimeToHash() {
+        return timeToHash;
+    }
+
+    public int getResultLength() {
+        return resultLength;
     }
 
     public void setName(String newName) {
@@ -113,6 +127,14 @@ public class HashingScheme {
         fields.remove((int) index);
     }
 
+    public void setTimeToHash(int newTimeToHash) {
+        timeToHash = newTimeToHash;
+    }
+
+    public void setResultLength(int newResultLength) {
+        resultLength = newResultLength;
+    }
+
     /**
      * Generate a string for storing and restoring this scheme.
      * Normally this process is done by "Serialization"
@@ -144,6 +166,14 @@ public class HashingScheme {
 
         builder.append("transform|");
         builder.append(transform.toString());
+        builder.append('\n');
+
+        builder.append("timetohash|");
+        builder.append(timeToHash);
+        builder.append('\n');
+
+        builder.append("resultlength|");
+        builder.append(resultLength);
         builder.append('\n');
 
         // fields one by one
@@ -186,6 +216,20 @@ public class HashingScheme {
             else if (line.startsWith("transform|")) {
                 HashingSchemeTransform nTransform = Enum.valueOf(HashingSchemeTransform.class, line.substring(10));
                 scheme.setTransform(nTransform);
+            }
+            else if (line.startsWith("timetohash|")) {
+                Integer time = Integer.valueOf(line.substring(11));
+                if (time <= 0 || time > 100) {
+                    time = 1;
+                }
+                scheme.setTimeToHash(time);
+            }
+            else if (line.startsWith("resultlength|")) {
+                Integer len = Integer.valueOf(line.substring(13));
+                if (len <= 0 || len > 32) {
+                    len = 16;
+                }
+                scheme.setResultLength(len);
             }
             else if (line.startsWith("startfield")) {
                 StringBuilder builder = new StringBuilder();

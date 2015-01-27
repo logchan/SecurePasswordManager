@@ -28,6 +28,8 @@
     <string name="scheme_description_desc">The description of this scheme</string>
     <string name="scheme_crypto_desc">The method to perform hashing</string>
     <string name="scheme_transform_desc">The transform of result after hashing</string>
+    <string name="scheme_timetohash_desc">How many times to do hashing</string>
+    <string name="scheme_resultlen_desc">The length of result</string>
 
     <!-- Transform -->
     <string name="trans_no_transform">No transform</string>
@@ -106,6 +108,8 @@
     <string name="scheme_name">Scheme Name</string>
     <string name="scheme_description">Scheme Description</string>
     <string name="scheme_transform">Transform</string>
+    <string name="scheme_timetohash">Time to hash (1–100)</string>
+    <string name="scheme_resultlength">Length of result (1–32)</string>
     <string name="md5_is_the_only_one">Sorry, this is the only option for now.</string>
     <string name="scheme_name_exists">Scheme of the same name already exists.</string>
     <string name="delete_field_dialog">Delete \"%1\"?</string>

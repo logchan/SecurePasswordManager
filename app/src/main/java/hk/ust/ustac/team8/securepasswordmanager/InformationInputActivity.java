@@ -98,8 +98,13 @@ public class InformationInputActivity extends Activity implements Button.OnClick
         initListView(false);
 
         // apply the application settings
-        timeToHashED.setText(((Integer)manager.getSettings().defaultHashingTimes).toString());
-        resultLenED.setText(((Integer)manager.getSettings().defaultResultLength).toString());
+        // timeToHashED.setText(((Integer)manager.getSettings().defaultHashingTimes).toString());
+        // resultLenED.setText(((Integer)manager.getSettings().defaultResultLength).toString());
+
+        // UPDATE 2 (2015-01-27)
+        // changed to: apply scheme settings
+        timeToHashED.setText(((Integer)scheme.getTimeToHash()).toString());
+        resultLenED.setText(((Integer)scheme.getResultLength()).toString());
     }
 
     @Override
